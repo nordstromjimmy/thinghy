@@ -15,6 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          defer
+          data-domain="thinghy.com"
+          src="https://plausible.io/js/script.js"
+        ></script>
+      </head>
       <body>{children}</body>
     </html>
   );
