@@ -1,6 +1,42 @@
 import { WaitlistForm } from "@/components/WaitlistForm";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Thinghy - Your Searchable Brain",
+  description:
+    "Thinghy helps you remember the fixes, facts, and forgotten things you figure out — so you never have to solve the same problem twice.",
+  keywords: [
+    "personal memory app",
+    "fix log",
+    "home maintenance",
+    "recall tool",
+    "Thinghy",
+  ],
+  openGraph: {
+    title: "Thinghy",
+    description: "Unload your brain. Find it later.",
+    url: "https://thinghy.com",
+    siteName: "Thinghy",
+    images: [
+      {
+        url: "https://thinghy.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Thinghy App Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@thinghyapp", // optional
+    title: "Thinghy",
+    description: "Your brain, but searchable.",
+    images: ["https://thinghy.com/og-image.jpg"],
+  },
+};
+
 export default function Home() {
   return (
     <main className="bg-white text-gray-900">
@@ -16,9 +52,9 @@ export default function Home() {
         <h1 className="text-5xl font-bold mb-4">Thinghy</h1>
         <h2 className="text-2xl font-bold mb-4">Your searchable brain.</h2>
         <p className="text-xl max-w-2xl mb-6">
-          Thinghy helps you remember all the little things, fixes, facts,
-          purchases, and “how did I do that again?” moments — so you never have
-          to solve the same problem twice.
+          Thinghy helps you remember all the little things, fixes, purchases,
+          and “how did I do that again?” moments - so you never have to solve
+          the same problem twice.
         </p>
         <WaitlistForm />
         {/* Scroll indicator */}
@@ -43,7 +79,7 @@ export default function Home() {
               Highly Customizable Logs
             </h3>
             <p className="text-gray-600">
-              Add notes, links, photos, receipts, tags, reminders — make it fit
+              Add notes, links, photos, receipts, tags, reminders - make it fit
               your way of remembering.
             </p>
           </div>

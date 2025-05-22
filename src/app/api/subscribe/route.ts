@@ -1,7 +1,14 @@
-import { NextResponse } from "next/server";
+import { isRateLimited } from "@/lib/rateLimit";
 import { supabase } from "@/lib/supabase";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+  }
+
   const { email } = await req.json();
 
   if (!email || typeof email !== "string") {
@@ -9,7 +16,6 @@ export async function POST(req: Request) {
   }
 
   const { error } = await supabase.from("waitlist").insert([{ email }]);
-
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
