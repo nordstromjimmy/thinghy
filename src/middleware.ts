@@ -17,17 +17,19 @@ export function middleware(req: NextRequest) {
   ];
   const { pathname } = req.nextUrl;
 
+  const isApi = pathname.startsWith("/api/");
+
   const isPublic = publicRoutes.some(
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
-  if (isPublic) return NextResponse.next();
+  if (isPublic || isApi) return NextResponse.next();
 
   return NextResponse.redirect(new URL("/", req.url));
 }
 export const config = {
   matcher: [
     // Ignore static/internal assets AND root-level public images
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.webp$|.*\\.svg$).*)",
+    "/((?!_next/static|_next/image|api|favicon.ico|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.webp$|.*\\.svg$).*)",
   ],
 };

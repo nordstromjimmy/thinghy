@@ -42,7 +42,9 @@ export function WaitlistForm() {
         {status === "loading" ? "Joining..." : "Join the Waitlist"}
       </button>
       {status === "success" && (
-        <p className="text-green-600 mt-2">You're on the list! 🎉</p>
+        <p className="text-green-600 mt-2">
+          Thanks! We’ll notify you when Thinghy is live. 🎉
+        </p>
       )}
       {status === "error" && (
         <p className="text-red-600 mt-2">Something went wrong. Try again.</p>
