@@ -1,3 +1,4 @@
+import { WaitlistForm } from "@/components/WaitlistForm";
 import Image from "next/image";
 
 export default function Home() {
@@ -19,20 +20,7 @@ export default function Home() {
           purchases, and “how did I do that again?” moments — so you never have
           to solve the same problem twice.
         </p>
-        <form className="w-full max-w-sm">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md mb-3"
-          />
-          <button
-            type="submit"
-            className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition cursor-pointer"
-          >
-            Join the Waitlist
-          </button>
-        </form>
+        <WaitlistForm />
         {/* Scroll indicator */}
         <div className="mt-12 animate-bounce text-black text-3xl">↓</div>
       </section>
@@ -133,6 +121,16 @@ export default function Home() {
             Get Early Access
           </button>
         </form>
+
+        {/* Footer Links */}
+        <div className="mt-8 text-sm text-gray-400 flex justify-center gap-6">
+          <a href="/privacy" className="hover:underline">
+            Privacy Policy
+          </a>
+          <a href="/terms" className="hover:underline">
+            Terms of Service
+          </a>
+        </div>
       </section>
     </main>
   );
