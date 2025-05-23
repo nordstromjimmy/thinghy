@@ -1,3 +1,4 @@
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import Image from "next/image";
 
@@ -47,7 +48,7 @@ export default function Home() {
           alt="Thinghy mascot logo"
           width={200}
           height={100}
-          className="mb-6"
+          className="mb-6 transition-transform transform hover:-translate-y-2"
         />
         <h1 className="text-5xl font-bold mb-4">Thinghy.</h1>
         <h2 className="text-2xl italic font-bold mb-4">
@@ -67,7 +68,7 @@ export default function Home() {
       <section className="py-20 bg-gray-50 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Why Thinghy?</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div>
+          <div className="transition-transform transform hover:-translate-x-1 hover:cursor-default">
             <h3 className="text-xl font-semibold mb-2">
               Fix It Once, Remember Forever
             </h3>
@@ -76,7 +77,7 @@ export default function Home() {
               Wi-Fi printer, or which paint color you used in the bedroom.
             </p>
           </div>
-          <div>
+          <div className="transition-transform transform hover:translate-y-1 hover:cursor-default">
             <h3 className="text-xl font-semibold mb-2">
               Highly Customizable Logs
             </h3>
@@ -85,7 +86,7 @@ export default function Home() {
               your way of remembering.
             </p>
           </div>
-          <div>
+          <div className="transition-transform transform hover:translate-x-1 hover:cursor-default">
             <h3 className="text-xl font-semibold mb-2">
               Searchable & Structured
             </h3>
@@ -103,7 +104,7 @@ export default function Home() {
           What Could You Save in Thinghy?
         </h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-gray-700">
-          <div className="p-6 border rounded-xl bg-white shadow">
+          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">💡 Home & Maintenance</h4>
             <ul className="list-disc ml-6">
               <li>HVAC filter size + link to reorder</li>
@@ -111,7 +112,7 @@ export default function Home() {
               <li>Which paint color you used in the living room</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow">
+          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">🚗 Car & Garage</h4>
             <ul className="list-disc ml-6">
               <li>Oil type + when it was last changed</li>
@@ -119,7 +120,7 @@ export default function Home() {
               <li>Which windshield wipers fit your model</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow">
+          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">
               🧠 Life Hacks & Processes
             </h4>
@@ -129,7 +130,7 @@ export default function Home() {
               <li>Instructions for canceling an obscure subscription</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow">
+          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">📦 Purchases & Products</h4>
             <ul className="list-disc ml-6">
               <li>Where you bought your favorite lightbulbs</li>
@@ -146,19 +147,9 @@ export default function Home() {
         <p className="mb-6">
           Unload your brain. Find it later. Join the early access list.
         </p>
-        <form className="w-full max-w-sm mx-auto">
-          <input
-            type="email"
-            placeholder="Email address"
-            className="w-full px-4 py-2 rounded-md mb-3 text-black"
-          />
-          <button
-            type="submit"
-            className="w-full bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 transition cursor-pointer"
-          >
-            Get Early Access
-          </button>
-        </form>
+        <div className="w-full max-w-sm mx-auto mt-18">
+          <ScrollToTopButton></ScrollToTopButton>
+        </div>
 
         {/* Footer Links */}
         <div className="mt-8 text-sm text-gray-400 flex justify-center gap-6">
