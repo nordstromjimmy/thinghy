@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,6 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
         <script
           defer
@@ -18,7 +18,9 @@ export default function RootLayout({
           src="https://plausible.io/js/script.js"
         ></script>
       </head>
-      <body>{children}</body>
+      <body>
+        {children} <Toaster richColors position="bottom-center" />
+      </body>
     </html>
   );
 }

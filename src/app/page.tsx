@@ -70,8 +70,8 @@ export default function Home() {
               Fix It Once, Remember Forever
             </h3>
             <p className="text-gray-600">
-              Store exactly how you unclogged that drain, what oil your car
-              needs, or which smart lock code your Airbnb used.
+              Remember where you stored that warranty, how you connected your
+              Wi-Fi printer, or which paint color you used in the bedroom.
             </p>
           </div>
           <div>
@@ -106,7 +106,7 @@ export default function Home() {
             <ul className="list-disc ml-6">
               <li>HVAC filter size + link to reorder</li>
               <li>Wi-Fi setup for basement router</li>
-              <li>How you fixed the leaky showerhead</li>
+              <li>Which paint color you used in the living room</li>
             </ul>
           </div>
           <div className="p-6 border rounded-xl bg-white shadow">
@@ -114,7 +114,7 @@ export default function Home() {
             <ul className="list-disc ml-6">
               <li>Oil type + when it was last changed</li>
               <li>Tire pressure for your winter set</li>
-              <li>That weird noise fix from 6 months ago</li>
+              <li>Which windshield wipers fit your model</li>
             </ul>
           </div>
           <div className="p-6 border rounded-xl bg-white shadow">
@@ -132,7 +132,7 @@ export default function Home() {
             <ul className="list-disc ml-6">
               <li>Where you bought your favorite lightbulbs</li>
               <li>Which HDMI adapter actually worked</li>
-              <li>Sizes for odd batteries or parts</li>
+              <li>What batteries your smoke alarm takes</li>
             </ul>
           </div>
         </div>

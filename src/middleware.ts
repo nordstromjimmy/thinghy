@@ -13,6 +13,7 @@ export function middleware(req: NextRequest) {
     "/privacy",
     "/sitemap.xml",
     "/robots.txt",
+    "/favicon.ico",
     "/og-image.jpg",
   ];
   const { pathname } = req.nextUrl;
