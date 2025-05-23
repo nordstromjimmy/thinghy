@@ -49,8 +49,10 @@ export default function Home() {
           height={100}
           className="mb-6"
         />
-        <h1 className="text-5xl font-bold mb-4">Thinghy</h1>
-        <h2 className="text-2xl font-bold mb-4">Your searchable brain.</h2>
+        <h1 className="text-5xl font-bold mb-4">Thinghy.</h1>
+        <h2 className="text-2xl italic font-bold mb-4">
+          Your searchable brain
+        </h2>
         <p className="text-xl max-w-2xl mb-6">
           Thinghy helps you remember all the little things, fixes, purchases,
           and “how did I do that again?” moments - so you never have to solve
