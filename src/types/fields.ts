@@ -1,0 +1,22 @@
+export const AVAILABLE_FIELDS = [
+  { id: "text", label: "Text" },
+  { id: "number", label: "Number" },
+  { id: "password", label: "Password" },
+  { id: "tags", label: "Tags" },
+  { id: "category", label: "Category" },
+  { id: "image", label: "Image" },
+  { id: "location", label: "Location" },
+  { id: "notes", label: "Notes" },
+  { id: "date", label: "Date" },
+  { id: "datetime", label: "Date & Time" },
+  { id: "url", label: "Link" },
+  { id: "checkbox", label: "Checkbox" },
+  { id: "email", label: "Email" },
+  { id: "phone", label: "Phone Number" },
+  { id: "color", label: "Color" },
+  { id: "rating", label: "Rating" },
+  { id: "duration", label: "Time Duration" },
+  { id: "currency", label: "Currency" },
+  { id: "related", label: "Linked Thinghy" },
+  // Future: file upload, markdown, JSON, etc.
+];

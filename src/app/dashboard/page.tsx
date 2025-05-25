@@ -14,11 +14,12 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50">
-      <h1 className="text-3xl font-bold">
-        Welcome to your Dashboard, {user.email}
-      </h1>
-      <LogoutButton></LogoutButton>
+    <main className="flex flex-col items-center justify-center bg-[#2a2a3c]">
+      <h1 className="text-2xl font-bold mb-4">Welcome to your Dashboard</h1>
+      <p className="text-gray-600">
+        Start by adding your first Thinghy - the fix, the find, or the fact you
+        don't want to forget.
+      </p>
     </main>
   );
 }
