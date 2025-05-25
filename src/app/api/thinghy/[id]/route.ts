@@ -28,7 +28,7 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const supabase = createSupabaseServerClient();
@@ -55,7 +55,7 @@ export async function PATCH(
 
 export async function DELETE(
   _: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const supabase = createSupabaseServerClient();
