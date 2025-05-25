@@ -1,6 +1,6 @@
 export default function PrivacyPage() {
   return (
-    <main className="max-w-3xl mx-auto px-6 py-20 text-gray-800">
+    <main className="max-w-3xl bg-[#1e1e2f] mx-auto px-6 py-20 text-gray-800">
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
       <p className="mb-4">
         Thinghy respects your privacy. We do not share, sell, or abuse your
