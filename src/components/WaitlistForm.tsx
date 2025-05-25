@@ -32,12 +32,12 @@ export function WaitlistForm() {
         onChange={(e) => setEmail(e.target.value)}
         required
         placeholder="Enter your email"
-        className="w-full px-4 py-2 border border-gray-300 rounded-md mb-3"
+        className="w-full px-4 py-2 text-white border border-gray-300 rounded-md mb-3"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition cursor-pointer"
+        className="w-full bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer"
       >
         {status === "loading" ? "Joining..." : "Join the Waitlist"}
       </button>

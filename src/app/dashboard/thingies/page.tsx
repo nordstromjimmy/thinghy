@@ -43,7 +43,7 @@ export default async function ThinghyListPage() {
                 </h2>
                 <div className="mt-2 text-sm text-gray-300 space-y-1">
                   {thinghy.fields
-                    ?.slice(0, 3)
+                    ?.slice(0, 2)
                     .map((field: any, index: number) => (
                       <p key={index}>
                         <strong>{field.label}:</strong> {field.value}

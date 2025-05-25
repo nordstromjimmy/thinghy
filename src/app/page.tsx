@@ -40,7 +40,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="bg-white text-gray-900">
+    <main className="bg-[#1e1e2f] text-gray-900">
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <Image
@@ -50,47 +50,47 @@ export default function Home() {
           height={100}
           className="mb-6 transition-transform transform hover:-translate-y-2"
         />
-        <h1 className="text-5xl font-bold mb-4">Thinghy.</h1>
-        <h2 className="text-2xl italic font-bold mb-4">
+        <h1 className="text-5xl text-white font-bold mb-4">Thinghy.</h1>
+        <h2 className="text-2xl italic text-white font-bold mb-4">
           Your searchable brain
         </h2>
-        <p className="text-xl max-w-2xl mb-6">
+        <p className="text-xl max-w-2xl text-white mb-6">
           Thinghy helps you remember all the little things, fixes, purchases,
           and “how did I do that again?” moments - so you never have to solve
           the same problem twice.
         </p>
         <WaitlistForm />
         {/* Scroll indicator */}
-        <div className="mt-12 animate-bounce text-black text-3xl">↓</div>
+        <div className="mt-12 animate-bounce text-white text-3xl">↓</div>
       </section>
 
       {/* Feature Highlights */}
-      <section className="py-20 bg-gray-50 px-6 text-center">
-        <h2 className="text-3xl font-semibold mb-6">Why Thinghy?</h2>
+      <section className="py-20 bg-[#2a2a3c] px-6 text-center">
+        <h2 className="text-3xl text-white font-semibold mb-6">Why Thinghy?</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="transition-transform transform hover:-translate-x-1 hover:cursor-default">
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl text-white font-semibold mb-2">
               Fix It Once, Remember Forever
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Remember where you stored that warranty, how you connected your
               Wi-Fi printer, or which paint color you used in the bedroom.
             </p>
           </div>
           <div className="transition-transform transform hover:translate-y-1 hover:cursor-default">
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl text-white font-semibold mb-2">
               Highly Customizable Logs
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Add notes, links, photos, receipts, tags, reminders - make it fit
               your way of remembering.
             </p>
           </div>
           <div className="transition-transform transform hover:translate-x-1 hover:cursor-default">
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl text-white font-semibold mb-2">
               Searchable & Structured
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Forget scrolling through random notes. Search by keyword,
               category, or even tag like “filters” or “car.”
             </p>
@@ -100,39 +100,39 @@ export default function Home() {
 
       {/* Example Use Cases */}
       <section className="py-20 px-6">
-        <h2 className="text-3xl font-semibold mb-8 text-center">
+        <h2 className="text-3xl text-white font-semibold mb-8 text-center">
           What Could You Save in Thinghy?
         </h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-gray-700">
-          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
+          <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">💡 Home & Maintenance</h4>
-            <ul className="list-disc ml-6">
+            <ul className="list-disc text-gray-300 ml-6">
               <li>HVAC filter size + link to reorder</li>
               <li>Wi-Fi setup for basement router</li>
               <li>Which paint color you used in the living room</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
+          <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">🚗 Car & Garage</h4>
-            <ul className="list-disc ml-6">
+            <ul className="list-disc text-gray-300 ml-6">
               <li>Oil type + when it was last changed</li>
               <li>Tire pressure for your winter set</li>
               <li>Which windshield wipers fit your model</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
+          <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">
               🧠 Life Hacks & Processes
             </h4>
-            <ul className="list-disc ml-6">
+            <ul className="list-disc text-gray-300 ml-6">
               <li>How to set up your smart thermostat</li>
               <li>Steps to reset that annoying printer</li>
               <li>Instructions for canceling an obscure subscription</li>
             </ul>
           </div>
-          <div className="p-6 border rounded-xl bg-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
+          <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
             <h4 className="font-bold text-lg mb-2">📦 Purchases & Products</h4>
-            <ul className="list-disc ml-6">
+            <ul className="list-disc text-gray-300 ml-6">
               <li>Where you bought your favorite lightbulbs</li>
               <li>Which HDMI adapter actually worked</li>
               <li>What batteries your smoke alarm takes</li>
@@ -142,7 +142,7 @@ export default function Home() {
       </section>
 
       {/* CTA Footer */}
-      <section className="py-20 bg-black text-white text-center">
+      <section className="py-20 bg-[#2a2a3c] text-white text-center">
         <h2 className="text-3xl font-bold mb-4">Thinghy is launching soon.</h2>
         <p className="mb-6">
           Unload your brain. Find it later. Join the early access list.

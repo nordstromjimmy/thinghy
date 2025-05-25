@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { AVAILABLE_FIELDS } from "@/types/fields";
+import ThinghyForm from "./ThinghyForm";
 
 interface Field {
   id: string;
@@ -28,24 +29,6 @@ export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
   const [data, setData] = useState(thinghy);
   const [saving, setSaving] = useState(false);
 
-  const handleSave = async () => {
-    setSaving(true);
-    const res = await fetch(`/api/thinghy/${thinghy.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      toast.error("Failed to save changes");
-    } else {
-      toast.success("Thinghy updated!");
-      setIsEditing(false);
-    }
-
-    setSaving(false);
-  };
-
   const handleDelete = async () => {
     const confirmDelete = confirm(
       "Are you sure you want to delete this Thinghy?"
@@ -64,50 +47,10 @@ export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
     }
   };
 
-  const handleFieldChange = (fieldId: string, value: string) => {
-    setData((prev) => ({
-      ...prev,
-      fields: prev.fields.map((f) => (f.id === fieldId ? { ...f, value } : f)),
-    }));
-  };
-
-  const handleRemoveField = (fieldId: string) => {
-    setData((prev) => ({
-      ...prev,
-      fields: prev.fields.filter((f) => f.id !== fieldId),
-    }));
-  };
-
-  const handleAddField = (fieldType: string) => {
-    const definition = AVAILABLE_FIELDS.find((f) => f.id === fieldType);
-    if (!definition) return;
-
-    setData((prev) => ({
-      ...prev,
-      fields: [
-        ...prev.fields,
-        {
-          id: uuidv4(),
-          type: definition.id,
-          label: definition.label,
-          value: "",
-        },
-      ],
-    }));
-  };
-
   return (
-    <main className="max-w-2xl mx-auto p-6 text-white">
+    <main className="max-w-3xl mx-auto p-6 text-white">
       <div className="flex justify-between items-center mb-6">
-        {isEditing ? (
-          <input
-            value={data.title}
-            onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="text-2xl font-bold border px-2 py-1 rounded w-full mr-4 bg-[#2a2a3c] text-white border-gray-700 focus:outline-none"
-          />
-        ) : (
-          <h1 className="text-2xl font-bold text-white">{data.title}</h1>
-        )}
+        <h1 className="text-2xl font-bold text-white">{data.title}</h1>
 
         <div className="flex gap-2">
           <button
@@ -125,67 +68,42 @@ export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
         </div>
       </div>
 
-      <ul className="space-y-4 mb-6">
-        {data.fields.map((field) => (
-          <li
-            key={field.id}
-            className="bg-[#2a2a3c] p-4 border border-gray-700 rounded shadow-sm"
-          >
-            <p className="text-sm text-gray-400 mb-1">{field.label}</p>
-            {isEditing ? (
-              <div className="relative">
-                <input
-                  value={field.value}
-                  onChange={(e) => handleFieldChange(field.id, e.target.value)}
-                  className="w-full text-sm bg-[#1e1e2f] border border-gray-700 px-3 py-2 rounded placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-white"
-                />
-                <button
-                  onClick={() => handleRemoveField(field.id)}
-                  className="absolute top-1/2 right-2 -translate-y-1/2 text-xs bg-gray-600 text-white w-5 h-5 rounded-full hover:bg-gray-500"
-                  title="Remove field"
-                >
-                  ×
-                </button>
-              </div>
-            ) : (
-              <p className="text-base text-white">{field.value}</p>
-            )}
-          </li>
-        ))}
-      </ul>
+      {isEditing ? (
+        <ThinghyForm
+          initialTitle={data.title}
+          initialFields={data.fields}
+          onSave={async (title, fields) => {
+            setSaving(true);
+            const res = await fetch(`/api/thinghy/${data.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title, fields }),
+            });
 
-      {isEditing && (
-        <div className="mb-6 flex flex-wrap gap-2">
-          {AVAILABLE_FIELDS.map((field) => (
-            <button
-              key={field.id + Math.random()}
-              onClick={() => handleAddField(field.id)}
-              className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1.5 rounded transition"
+            if (!res.ok) {
+              toast.error("Failed to save changes");
+            } else {
+              toast.success("Thinghy updated!");
+              setData({ ...data, title, fields });
+              setIsEditing(false);
+            }
+            setSaving(false);
+          }}
+          isSaving={saving}
+          submitLabel="Save Changes"
+        />
+      ) : (
+        <ul className="space-y-4 mb-6">
+          {data.fields.map((field) => (
+            <li
+              key={field.id}
+              className="bg-[#2a2a3c] p-4 border border-gray-700 rounded shadow-sm"
             >
-              + {field.label}
-            </button>
+              <p className="text-sm text-gray-400 mb-1">{field.label}</p>
+              <p className="text-base text-white">{field.value}</p>
+            </li>
           ))}
-        </div>
-      )}
-
-      {isEditing && (
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-50 flex items-center gap-2"
-        >
-          {saving && <Loader2 className="animate-spin w-4 h-4" />}
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
-      )}
-
-      {!isEditing && (
-        <a
-          href="/dashboard/thingies"
-          className="text-sm text-gray-400 hover:underline"
-        >
-          ← Back to Thinghies
-        </a>
+        </ul>
       )}
     </main>
   );
