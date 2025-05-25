@@ -152,13 +152,19 @@ export default function Home() {
         </div>
 
         {/* Footer Links */}
-        <div className="mt-8 text-sm text-gray-400 flex justify-center gap-6">
-          <a href="/privacy" className="hover:underline">
-            Privacy Policy
-          </a>
-          <a href="/terms" className="hover:underline">
-            Terms of Service
-          </a>
+        <div className="mt-8 text-sm text-gray-400 flex justify-center">
+          <div className="flex-col">
+            <p className="mb-2">
+              &copy; {new Date().getFullYear()} thinghy.com | All rights
+              reserved.
+            </p>
+            <a href="/privacy" className="hover:underline mr-2">
+              Privacy Policy
+            </a>
+            <a href="/terms" className="hover:underline">
+              Terms of Service
+            </a>
+          </div>
         </div>
       </section>
     </main>
