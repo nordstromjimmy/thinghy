@@ -45,8 +45,25 @@ export default async function ThinghyListPage() {
                   {thinghy.fields
                     ?.slice(0, 2)
                     .map((field: any, index: number) => (
-                      <p key={index}>
-                        <strong>{field.label}:</strong> {field.value}
+                      <p key={index} className="flex items-center gap-2">
+                        <strong>{field.label}:</strong>
+                        {field.type === "password" ? (
+                          <span className="text-white">••••••</span>
+                        ) : field.type === "checkbox" ? (
+                          <input
+                            type="checkbox"
+                            checked={field.value === "true"}
+                            readOnly
+                            className="w-4 h-4 accent-white"
+                          />
+                        ) : field.type === "color" ? (
+                          <span
+                            className="inline-block w-4 h-4 rounded border border-gray-500"
+                            style={{ backgroundColor: field.value }}
+                          />
+                        ) : (
+                          <span>{field.value}</span>
+                        )}
                       </p>
                     ))}
                 </div>

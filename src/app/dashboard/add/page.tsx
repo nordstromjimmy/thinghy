@@ -1,16 +1,8 @@
 "use client";
 import { useState } from "react";
 import { showErrorToast, showToast } from "@/components/ShowToast";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { AVAILABLE_FIELDS } from "@/types/fields";
-import { v4 as uuidv4 } from "uuid";
 import ThinghyForm from "@/components/ThinghyForm";
-
-type NewField = {
-  id: string;
-  type: string;
-};
 
 export default function AddThinghyPage() {
   const [isSaving, setIsSaving] = useState(false);

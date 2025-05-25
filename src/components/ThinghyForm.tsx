@@ -9,6 +9,7 @@ type Field = {
   type: string;
   label: string;
   value: string;
+  showPassword?: boolean;
 };
 
 type ThinghyFormProps = {
@@ -42,6 +43,10 @@ export default function ThinghyForm({
   const handleSubmit = async () => {
     if (!title.trim()) return;
     await onSave(title.trim(), fields);
+  };
+
+  const updateField = (id: string, value: string) => {
+    setFields((prev) => prev.map((f) => (f.id === id ? { ...f, value } : f)));
   };
 
   return (
@@ -88,25 +93,65 @@ export default function ThinghyForm({
             />
 
             {/* Value Input */}
-            <input
-              type={
-                field.type === "number"
-                  ? "number"
-                  : field.type === "date"
-                  ? "date"
-                  : "text"
-              }
-              value={field.value}
-              onChange={(e) =>
-                setFields((prev) =>
-                  prev.map((f) =>
-                    f.id === field.id ? { ...f, value: e.target.value } : f
-                  )
-                )
-              }
-              className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
-            />
-
+            {field.type === "checkbox" ? (
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={field.value === "true"}
+                  onChange={(e) =>
+                    updateField(field.id, e.target.checked ? "true" : "false")
+                  }
+                  className="accent-white w-4 h-4"
+                />
+                {field.label}
+              </label>
+            ) : field.type === "password" ? (
+              <div className="relative">
+                <input
+                  type={field.showPassword ? "text" : "password"}
+                  value={field.value}
+                  onChange={(e) =>
+                    setFields((prev) =>
+                      prev.map((f) =>
+                        f.id === field.id ? { ...f, value: e.target.value } : f
+                      )
+                    )
+                  }
+                  className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 pr-10 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFields((prev) =>
+                      prev.map((f) =>
+                        f.id === field.id
+                          ? { ...f, showPassword: !f.showPassword }
+                          : f
+                      )
+                    )
+                  }
+                  className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-white text-sm"
+                  title="Toggle password visibility"
+                >
+                  {field.showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
+            ) : (
+              <input
+                type={
+                  field.type === "number"
+                    ? "number"
+                    : field.type === "date"
+                    ? "date"
+                    : field.type === "color"
+                    ? "color"
+                    : "text"
+                }
+                value={field.value}
+                onChange={(e) => updateField(field.id, e.target.value)}
+                className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+              />
+            )}
             {/* Control Buttons */}
             <div className="flex justify-between mt-1">
               <div className="flex gap-1">

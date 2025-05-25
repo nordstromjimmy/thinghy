@@ -38,11 +38,17 @@ export async function PATCH(
   } = await supabase.auth.getUser();
 
   const body = await req.json();
-  const { title, fields } = body;
+
+  const updates: any = {};
+
+  if (body.title) updates.title = body.title;
+  if (body.fields) updates.fields = body.fields;
+  if (typeof body.isFavorite === "boolean")
+    updates.is_favorite = body.isFavorite;
 
   const { error } = await supabase
     .from("thinghies")
-    .update({ title, fields })
+    .update(updates)
     .eq("id", id)
     .eq("user_id", user?.id);
 
