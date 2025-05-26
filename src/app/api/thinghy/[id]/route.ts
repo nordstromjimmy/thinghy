@@ -45,6 +45,7 @@ export async function PATCH(
   if (body.fields) updates.fields = body.fields;
   if (typeof body.isFavorite === "boolean")
     updates.is_favorite = body.isFavorite;
+  if (body.category !== undefined) updates.category = body.category;
 
   const { error } = await supabase
     .from("thinghies")

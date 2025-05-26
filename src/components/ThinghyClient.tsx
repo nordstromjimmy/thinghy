@@ -17,11 +17,16 @@ type ThinghyClientProps = {
     id: string;
     title: string;
     fields: Field[];
+    category: string | null;
     is_favorite?: boolean;
   };
+  categories: { name: string }[];
 };
 
-export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
+export default function ThinghyClient({
+  thinghy,
+  categories,
+}: ThinghyClientProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState(thinghy);
@@ -90,6 +95,22 @@ export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
         </button>
       </div>
 
+      {isEditing && (
+        <select
+          value={data.category || ""}
+          onChange={(e) =>
+            setData({ ...data, category: e.target.value || null })
+          }
+          className="w-full mt-2 bg-[#2a2a3c] text-white border border-gray-700 rounded px-3 py-2"
+        >
+          <option value="">No Category</option>
+          {categories.map((cat) => (
+            <option key={cat.name} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      )}
       {isEditing ? (
         <ThinghyForm
           initialTitle={data.title}
@@ -99,7 +120,11 @@ export default function ThinghyClient({ thinghy }: ThinghyClientProps) {
             const res = await fetch(`/api/thinghy/${data.id}`, {
               method: "PATCH",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ title, fields }),
+              body: JSON.stringify({
+                title,
+                fields,
+                category: data.category || null,
+              }),
             });
 
             if (!res.ok) {

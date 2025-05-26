@@ -15,9 +15,15 @@ type Field = {
 type ThinghyFormProps = {
   initialTitle?: string;
   initialFields?: Field[];
-  onSave: (title: string, fields: Field[]) => Promise<void>;
+  onSave: (
+    title: string,
+    fields: Field[],
+    category: string | null
+  ) => Promise<void>;
   isSaving?: boolean;
   submitLabel?: string;
+  categories?: { name: string }[];
+  defaultCategory?: string;
 };
 
 export default function ThinghyForm({
@@ -26,8 +32,11 @@ export default function ThinghyForm({
   onSave,
   isSaving = false,
   submitLabel = "Save Thinghy",
+  categories = [],
+  defaultCategory = "",
 }: ThinghyFormProps) {
   const [title, setTitle] = useState(initialTitle);
+  const [category, setCategory] = useState<string>(defaultCategory || "");
   const [fields, setFields] = useState<Field[]>(initialFields);
 
   const handleAddField = (type: string) => {
@@ -42,7 +51,7 @@ export default function ThinghyForm({
 
   const handleSubmit = async () => {
     if (!title.trim()) return;
-    await onSave(title.trim(), fields);
+    await onSave(title.trim(), fields, category || null);
   };
 
   const updateField = (id: string, value: string) => {
@@ -59,7 +68,22 @@ export default function ThinghyForm({
         onChange={(e) => setTitle(e.target.value)}
         className="text-2xl font-bold text-center bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm w-full max-w-md mb-8 focus:outline-none focus:ring-2 focus:ring-white"
       />
-
+      {categories && categories.length > 0 && (
+        <div className="w-full max-w-md mb-6">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full bg-[#2a2a3c] border border-gray-700 text-white rounded px-3 py-2"
+          >
+            <option value="">No Category</option>
+            {categories.map((cat) => (
+              <option key={cat.name} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       {/* Add Field Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-8">
         {AVAILABLE_FIELDS.map((field) => (

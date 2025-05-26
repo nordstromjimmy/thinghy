@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { title, fields, isFavorite } = body;
+  const { title, fields, isFavorite, category } = body;
 
   if (!title || typeof title !== "string") {
     return NextResponse.json(
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       title: title.trim(),
       fields: fields ?? [],
       is_favorite: isFavorite,
+      category: category || null,
     },
   ]);
 

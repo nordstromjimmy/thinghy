@@ -1,5 +1,6 @@
-import ThinghyClient from "@/components/ThinghyClient";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import ThinghyClient from "@/components/ThinghyClient";
+import { notFound } from "next/navigation";
 
 export default async function ThinghyPage({
   params,
@@ -7,22 +8,27 @@ export default async function ThinghyPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
   const supabase = createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data, error } = await supabase
+  if (!user) return notFound();
+
+  const { data: thinghy } = await supabase
     .from("thinghies")
     .select("*")
     .eq("id", id)
-    .eq("user_id", user?.id)
+    .eq("user_id", user.id)
     .single();
 
-  if (!data || error) {
-    return <p className="p-6">Not found</p>;
-  }
+  if (!thinghy) return notFound();
 
-  return <ThinghyClient thinghy={data} />;
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("name")
+    .eq("user_id", user.id)
+    .order("name", { ascending: true });
+
+  return <ThinghyClient thinghy={thinghy} categories={categories || []} />;
 }

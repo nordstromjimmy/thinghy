@@ -1,35 +1,32 @@
-"use client";
-import { useState } from "react";
-import { showErrorToast, showToast } from "@/components/ShowToast";
-import { useRouter } from "next/navigation";
-import ThinghyForm from "@/components/ThinghyForm";
+// ✅ Server Component
+import ThinghyFormWrapper from "@/components/ThinghyFormWrapper";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { redirect } from "next/navigation";
 
-export default function AddThinghyPage() {
-  const [isSaving, setIsSaving] = useState(false);
-  const router = useRouter();
+export default async function AddThinghyPage({
+  searchParams,
+}: {
+  searchParams: { category?: string };
+}) {
+  const supabase = createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const handleSave = async (title: string, fields: any[]) => {
-    try {
-      setIsSaving(true);
-      const response = await fetch("/api/thinghy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, fields }),
-      });
-      const result = await response.json();
+  if (!user) {
+    redirect("/login");
+  }
 
-      if (!response.ok) {
-        showErrorToast(result.error || "Something went wrong");
-      } else {
-        showToast("Thinghy saved!");
-        router.push("/dashboard/thingies");
-      }
-    } catch {
-      showErrorToast("Unexpected error");
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("name")
+    .eq("user_id", user.id)
+    .order("name", { ascending: true });
 
-  return <ThinghyForm onSave={handleSave} isSaving={isSaving} />;
+  return (
+    <ThinghyFormWrapper
+      categories={categories || []}
+      defaultCategory={searchParams.category || ""}
+    />
+  );
 }
