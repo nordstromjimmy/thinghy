@@ -59,7 +59,7 @@ export default function ThinghyForm({
   };
 
   return (
-    <div className="flex flex-col items-center justify-start pt-8 px-4 bg-[#1e1e2f] text-white">
+    <div className="py-6 max-w-full sm:max-w-5xl flex flex-col items-center justify-start bg-[#1e1e2f] text-white">
       {/* Title */}
       <input
         type="text"
@@ -229,7 +229,7 @@ export default function ThinghyForm({
         <button
           disabled={!title.trim() || isSaving}
           onClick={handleSubmit}
-          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center mx-auto gap-2"
+          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center mx-auto gap-2 cursor-pointer"
         >
           {isSaving && <Loader2 className="animate-spin w-4 h-4" />}
           {isSaving ? "Saving..." : submitLabel}

@@ -40,29 +40,31 @@ export default async function ThinghyListPage() {
   });
 
   return (
-    <main className="p-6 max-w-4xl mx-auto text-white">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold mb-6">Your Thinghies</h1>
+    <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-white">Your Thinghies</h1>
+
         <form
           action="/api/category/create"
           method="POST"
-          className="mb-8 flex items-center gap-2"
+          className="flex items-center gap-2 w-full md:w-auto"
         >
           <input
             type="text"
             name="category"
             placeholder="Create new category"
-            className="px-3 py-2 rounded bg-gray-800 text-white border border-gray-600"
+            className="w-full md:w-64 px-3 py-2 rounded bg-gray-800 text-white border border-gray-600"
             required
           />
           <button
             type="submit"
-            className="bg-yellow-200 text-black px-4 py-2 rounded hover:bg-yellow-300"
+            className="bg-yellow-200 text-black px-4 py-2 rounded hover:bg-yellow-300 whitespace-nowrap cursor-pointer"
           >
             Create
           </button>
         </form>
       </div>
+
       {categories!.length > 0 && (
         <div className="mb-6">
           <h2 className="text-sm text-gray-400 mb-2">Categories</h2>
@@ -100,7 +102,7 @@ export default async function ThinghyListPage() {
               href={`/dashboard/add?category=${encodeURIComponent(category)}`}
               className="text-sm text-yellow-200 hover:underline"
             >
-              + Add to {category}
+              + Add a Thinghy to {category}
             </Link>
           </div>
           <ul className="space-y-4">

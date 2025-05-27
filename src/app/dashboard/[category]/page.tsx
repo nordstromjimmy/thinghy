@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import CategoryClient from "@/components/CategoryClient";
 
 export default async function CategoryPage({
   params,
@@ -29,19 +30,23 @@ export default async function CategoryPage({
   }
 
   return (
-    <main className="p-6 max-w-4xl mx-auto text-white">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Category: {category}</h1>
-        <Link
-          href={`/dashboard/add?category=${category}`}
-          className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition"
-        >
-          + Add Thinghy
-        </Link>
+    <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
+      <div className="flex flex-col flex-row sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-white">Category: {category}</h1>
+
+        <div className="flex gap-2 flex-wrap sm:flex-nowrap">
+          <CategoryClient category={category} />
+          <Link
+            href={`/dashboard/add?category=${category}`}
+            className="bg-white text-black px-3 py-1.5 rounded hover:bg-gray-200 transition text-sm"
+          >
+            + Add Thinghy
+          </Link>
+        </div>
       </div>
 
       {data.length === 0 ? (
-        <p className="text-gray-400">No Thinghies yet in this category.</p>
+        <p className="text-gray-400">No Thinghies in this category yet.</p>
       ) : (
         <ul className="space-y-4">
           {data.map((thinghy) => (

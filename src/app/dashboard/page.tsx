@@ -20,7 +20,7 @@ export default async function DashboardPage() {
     .eq("is_favorite", true);
 
   return (
-    <>
+    <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
       <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c]">
         <h1 className="text-3xl font-bold mb-4">Welcome to your Dashboard</h1>
         <p className="text-gray-400 mb-8 max-w-lg text-center">
@@ -95,6 +95,6 @@ export default async function DashboardPage() {
           </section>
         )}
       </div>
-    </>
+    </main>
   );
 }

@@ -6,9 +6,11 @@ import { redirect } from "next/navigation";
 export default async function AddThinghyPage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
   const supabase = createSupabaseServerClient();
+  const { category } = await searchParams;
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -26,7 +28,7 @@ export default async function AddThinghyPage({
   return (
     <ThinghyFormWrapper
       categories={categories || []}
-      defaultCategory={searchParams.category || ""}
+      defaultCategory={category || ""}
     />
   );
 }
