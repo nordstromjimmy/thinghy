@@ -6,6 +6,7 @@ export async function PATCH(
   { params }: { params: Promise<{ category: string }> }
 ) {
   const { category } = await params;
+
   const { newName } = await req.json();
   const supabase = createSupabaseServerClient();
   const {
@@ -40,27 +41,29 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { category: string } }
+  { params }: { params: Promise<{ category: string }> }
 ) {
+  const { category } = await params;
+
   const supabase = createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({}, { status: 401 });
 
-  const category = decodeURIComponent(params.category);
+  const from = decodeURIComponent(category);
 
   const { error: clearThings } = await supabase
     .from("thinghies")
     .update({ category: null })
     .eq("user_id", user.id)
-    .eq("category", category);
+    .eq("category", from);
 
   const { error: deleteCat } = await supabase
     .from("categories")
     .delete()
     .eq("user_id", user.id)
-    .eq("name", category);
+    .eq("name", from);
 
   if (clearThings || deleteCat) {
     return NextResponse.json({ error: "Delete failed" }, { status: 500 });
