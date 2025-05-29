@@ -1,4 +1,3 @@
-// ✅ Server Component
 import ThinghyFormWrapper from "@/components/ThinghyFormWrapper";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";

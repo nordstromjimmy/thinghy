@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase";
 import { showErrorToast, showToast } from "@/components/ShowToast";
 
 export default function SignUpPage() {
@@ -9,6 +9,8 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const supabase = createBrowserClient();
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange(

@@ -3,7 +3,6 @@ export const AVAILABLE_FIELDS = [
   { id: "number", label: "Number" },
   { id: "password", label: "Password" },
   { id: "tags", label: "Tags" },
-  { id: "category", label: "Category" },
   { id: "image", label: "Image" },
   { id: "location", label: "Location" },
   { id: "notes", label: "Notes" },

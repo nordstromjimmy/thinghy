@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ThinghyForm from "./ThinghyForm";
 import PasswordReveal from "./PasswordReveal";
 import ConfirmModal from "./ConfirmModal";
 import { showErrorToast, showToast } from "./ShowToast";
+import ImageRenderer from "./ImageRenderer";
+import { createBrowserClient } from "@/lib/supabase";
 
 interface Field {
   id: string;
@@ -33,6 +35,38 @@ export default function ThinghyClient({
   const [data, setData] = useState(thinghy);
   const [saving, setSaving] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+
+  const supabase = createBrowserClient();
+
+  useEffect(() => {
+    const fetchSignedUrls = async () => {
+      const imageFields = data.fields.filter(
+        (f) => f.type === "image" && f.value
+      );
+
+      const urlPromises = imageFields.map(async (f) => {
+        const { data: urlData, error } = await supabase.storage
+          .from("thinghy-images")
+          .createSignedUrl(f.value, 60 * 60 * 24 * 7); // 7 days
+
+        return {
+          id: f.id,
+          url: urlData?.signedUrl || "",
+        };
+      });
+
+      const urls = await Promise.all(urlPromises);
+      const urlMap = urls.reduce((acc, curr) => {
+        acc[curr.id] = curr.url;
+        return acc;
+      }, {} as Record<string, string>);
+
+      setSignedUrls(urlMap);
+    };
+
+    fetchSignedUrls();
+  }, [data.fields, supabase]);
 
   const handleDelete = async () => {
     setSaving(true);
@@ -124,11 +158,12 @@ export default function ThinghyClient({
           ))}
         </select>
       )}
+
       {isEditing ? (
         <ThinghyForm
           initialTitle={data.title}
           initialFields={data.fields}
-          onSave={async (title, fields) => {
+          onSave={async (title, fields, category) => {
             setSaving(true);
             const res = await fetch(`/api/thinghy/${data.id}`, {
               method: "PATCH",
@@ -136,7 +171,7 @@ export default function ThinghyClient({
               body: JSON.stringify({
                 title,
                 fields,
-                category: data.category || null,
+                category,
               }),
             });
 
@@ -144,13 +179,15 @@ export default function ThinghyClient({
               showErrorToast("Failed to save changes!");
             } else {
               showToast("Thinghy updated!");
-              setData({ ...data, title, fields });
+              setData({ ...data, title, fields, category });
               setIsEditing(false);
             }
             setSaving(false);
           }}
           isSaving={saving}
           submitLabel="Save Changes"
+          categories={categories}
+          defaultCategory={data.category || ""}
         />
       ) : (
         <>
@@ -178,12 +215,15 @@ export default function ThinghyClient({
                     />
                     <span className="text-xs text-gray-400">{field.value}</span>
                   </div>
+                ) : field.type === "image" && signedUrls[field.id] ? (
+                  <ImageRenderer src={field.value} alt={field.label} />
                 ) : (
                   <p className="text-base text-white">{field.value}</p>
                 )}
               </li>
             ))}
           </ul>
+
           <a
             href="/dashboard/thingies"
             className="text-sm text-gray-600 hover:underline"

@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { Eye } from "lucide-react";
+import { EyeOff } from "lucide-react";
 
 export default function PasswordReveal({ value }: { value: string }) {
   const [visible, setVisible] = useState(false);
@@ -14,7 +16,7 @@ export default function PasswordReveal({ value }: { value: string }) {
         className="text-xs bg-gray-700 px-2 py-0.5 rounded hover:bg-gray-600"
         title={visible ? "Hide" : "Show"}
       >
-        {visible ? "🙈" : "👁️"}
+        {visible ? <EyeOff /> : <Eye />}
       </button>
     </div>
   );

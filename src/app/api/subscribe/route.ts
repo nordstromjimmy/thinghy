@@ -1,8 +1,9 @@
 import { isRateLimited } from "@/lib/rateLimit";
-import { supabase } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const supabase = createBrowserClient();
   const ip = req.headers.get("x-forwarded-for") || "unknown";
 
   if (isRateLimited(ip)) {

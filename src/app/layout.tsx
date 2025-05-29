@@ -20,7 +20,7 @@ export default function RootLayout({
         ></script>
       </head>
       <body>
-        {children} <Toaster richColors position="bottom-center" />
+        {children} <Toaster position="bottom-center" richColors closeButton />
       </body>
     </html>
   );

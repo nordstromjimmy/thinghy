@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { ImageIcon } from "lucide-react";
 
 export default async function ThinghyListPage() {
   const supabase = createSupabaseServerClient();
@@ -144,6 +145,8 @@ function ThinghyCard({ thinghy }: { thinghy: any }) {
                 className="inline-block w-4 h-4 rounded border border-gray-500"
                 style={{ backgroundColor: field.value }}
               />
+            ) : field.type === "image" && field.value ? (
+              <ImageIcon className="w-4 h-4" />
             ) : (
               <span>{field.value}</span>
             )}

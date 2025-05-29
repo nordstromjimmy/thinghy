@@ -54,20 +54,21 @@ export default function DashboardLayout({
 
         <nav className="flex flex-col gap-4 text-sm">
           <a
-            href="/dashboard"
-            className="bg-white text-black text-center font-bold px-3 py-2 rounded-md hover:bg-yellow-200 transition"
-          >
-            Dashboard
-          </a>
-          <a
             href="/dashboard/add"
-            className="bg-white text-black text-center font-bold px-3 py-2 rounded-md hover:bg-yellow-200 transition"
+            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
           >
             Add a new Thinghy
           </a>
           <a
+            href="/dashboard"
+            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
+          >
+            Dashboard
+          </a>
+
+          <a
             href="/dashboard/thingies"
-            className="bg-white text-black text-center font-bold px-3 py-2 rounded-md hover:bg-yellow-200 transition"
+            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
           >
             Your Thinghies
           </a>
