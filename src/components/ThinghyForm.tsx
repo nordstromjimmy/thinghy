@@ -108,8 +108,8 @@ export default function ThinghyForm({
 
           return {
             ...f,
-            value: result.path, // Store the permanent path
-            file: undefined, // Clean up
+            value: result.path,
+            file: undefined,
           };
         }
 
@@ -117,7 +117,6 @@ export default function ThinghyForm({
       })
     );
 
-    // Submit with uploaded image paths
     await onSave(title.trim(), preparedFields, category || null);
   };
 
@@ -126,7 +125,7 @@ export default function ThinghyForm({
   };
 
   return (
-    <div className="py-6 max-w-full sm:max-w-5xl flex flex-col items-center justify-start bg-[#1e1e2f] text-white">
+    <div className="py-6 max-w-full mx-auto sm:max-w-5xl flex flex-col items-center justify-start bg-[#1e1e2f] text-white">
       {/* Title */}
       <input
         type="text"
@@ -136,11 +135,11 @@ export default function ThinghyForm({
         className="text-2xl font-bold text-center bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm w-full max-w-md mb-8 focus:outline-none focus:ring-2 focus:ring-white"
       />
       {categories && categories.length > 0 && (
-        <div className="w-full max-w-md mb-6">
+        <div className="mb-6">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-[#2a2a3c] border border-gray-700 text-white rounded px-3 py-2"
+            className="w-44 bg-[#2a2a3c] border border-gray-700 text-white rounded px-2 py-1"
           >
             <option value="">No Category</option>
             {categories.map((cat) => (

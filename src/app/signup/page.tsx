@@ -45,14 +45,19 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-white text-gray-800">
-      <h1 className="text-4xl font-bold mb-12">Thingy.</h1>
-      <form onSubmit={handleSignUp} className="max-w-sm w-full px-4">
-        <h2 className="text-2xl text-center font-bold mb-4">Create Account</h2>
+    <main className="bg-[#1e1e2f] text-gray-900 min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-4xl text-white font-bold mb-12">Thingy.</h1>
+      <form
+        onSubmit={handleSignUp}
+        className="max-w-sm w-full bg-[#2a2a3c] p-6 border rounded-xl"
+      >
+        <h2 className="text-2xl text-white text-center font-bold mb-4">
+          Create Account
+        </h2>
         <input
           type="email"
           required
-          className="w-full mb-3 px-4 py-2 border rounded"
+          className="w-full text-white mb-3 px-4 py-2 border rounded"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -60,7 +65,7 @@ export default function SignUpPage() {
         <input
           type="password"
           required
-          className="w-full mb-3 px-4 py-2 border rounded"
+          className="w-full text-white mb-3 px-4 py-2 border rounded"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -68,14 +73,14 @@ export default function SignUpPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 cursor-pointer"
+          className="w-full bg-yellow-200 hover:bg-yellow-300 text-black mb-4 py-2 rounded cursor-pointer"
         >
           {loading ? "Creating account..." : "Sign Up"}
         </button>
-        <div className="text-center">
+        <div className="text-center text-gray-500">
           <p className="">
             Already a member?{" "}
-            <a href="/login" className="text-blue-500 underline cursor-pointer">
+            <a href="/login" className="text-gray-400 underline cursor-pointer">
               Log in
             </a>
           </p>

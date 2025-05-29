@@ -1,17 +1,22 @@
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import {
+  Star,
+  PlusCircle,
+  BookText,
+  Wrench,
+  ShieldCheck,
+  Eye,
+} from "lucide-react";
 
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
 
   const { data: favorites } = await supabase
     .from("thinghies")
@@ -21,41 +26,55 @@ export default async function DashboardPage() {
 
   return (
     <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
-      <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c]">
-        <h1 className="text-3xl font-bold mb-4">Welcome to your Dashboard</h1>
-        <p className="text-gray-400 mb-8 max-w-lg text-center">
-          Thinghy is your personal brain drawer — a place to offload and
-          organize anything you don’t want to forget.
+      <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c] rounded-xl shadow-md">
+        <h1 className="text-3xl font-bold mb-3">👋 Welcome to Thinghy</h1>
+        <p className="text-gray-400 mb-8 max-w-lg text-center text-sm sm:text-base">
+          Thinghy is your second brain – a safe place to store and organize
+          anything you don't want to forget.
         </p>
 
-        <section className="bg-[#1e1e2f] border border-gray-700 rounded-xl p-6 w-full max-w-2xl shadow-md">
-          <h2 className="text-xl font-semibold mb-4">How to use Thinghy</h2>
-          <ul className="space-y-3 text-sm text-gray-300">
-            <li>
-              1. <strong>Add a Thinghy</strong> to store details about anything
-              — from garage codes to router configs to gift ideas.
+        <section className="bg-[#1e1e2f] border border-gray-700 rounded-xl p-6 w-full max-w-2xl shadow-sm">
+          <h2 className="text-xl font-semibold mb-4">🚀 How to Use Thinghy</h2>
+          <ul className="space-y-4 text-sm text-gray-300">
+            <li className="flex gap-2 items-start">
+              <PlusCircle className="mt-0.5 text-yellow-300" size={18} />
+              <span>
+                <strong>Add a Thinghy</strong> to capture anything: codes,
+                processes, ideas, or notes.
+              </span>
             </li>
-            <li>
-              1. <strong>Customize each field</strong>: title it, tag it,
-              reorder it, and choose its type — like number, checkbox, color, or
-              image.
+            <li className="flex gap-2 items-start">
+              <Wrench className="mt-0.5 text-blue-300" size={18} />
+              <span>
+                <strong>Customize fields</strong>: use checkboxes, dates,
+                passwords, colors, and more.
+              </span>
             </li>
-            <li>
-              3. <strong>Passwords are secure by default</strong>, with a toggle
-              to show/hide them as needed.
+            <li className="flex gap-2 items-start">
+              <ShieldCheck className="mt-0.5 text-green-300" size={18} />
+              <span>
+                <strong>Passwords are secure</strong> by default. Toggle to
+                show/hide anytime.
+              </span>
             </li>
-            <li>
-              4. <strong>Preview your Thinghies</strong> with icons, checkboxes,
-              and color swatches in your list and detail views.
+            <li className="flex gap-2 items-start">
+              <Eye className="mt-0.5 text-purple-300" size={18} />
+              <span>
+                <strong>View your Thinghies</strong> in clean list and detail
+                formats.
+              </span>
             </li>
-            <li>
-              5. <strong>Edit any Thinghy</strong> anytime — change its order,
-              fields, or content on the fly.
+            <li className="flex gap-2 items-start">
+              <BookText className="mt-0.5 text-pink-300" size={18} />
+              <span>
+                <strong>Edit freely</strong> – reorder fields, update values, or
+                switch categories.
+              </span>
             </li>
           </ul>
         </section>
 
-        <div className="mt-8 flex gap-4">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Link
             href="/dashboard/add"
             className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition"
@@ -70,30 +89,34 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c]">
-        {" "}
-        {favorites && favorites.length > 0 && (
-          <section className="w-full max-w-2xl mb-10">
-            <h2 className="text-xl font-semibold mb-4">
-              ⭐ Favorite Thinghies
-            </h2>
+
+      <div className="flex flex-col items-center justify-start px-6 py-12 text-white">
+        <section className="w-full max-w-2xl">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Star className="text-yellow-300" size={20} /> Favorite Thinghies
+          </h2>
+          {favorites && favorites.length > 0 ? (
             <ul className="grid grid-cols-1 gap-4">
               {favorites.map((fav) => (
                 <li
                   key={fav.id}
-                  className="bg-[#1e1e2f] p-4 rounded border border-gray-700"
+                  className="bg-[#1e1e2f] p-4 rounded border border-gray-700 hover:bg-[#2a2a3c] transition"
                 >
-                  <a
+                  <Link
                     href={`/dashboard/thingies/${fav.id}`}
                     className="text-lg font-medium hover:underline"
                   >
                     {fav.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
-          </section>
-        )}
+          ) : (
+            <p className="text-sm text-gray-400 italic">
+              You haven't marked any Thinghies as favorites yet.
+            </p>
+          )}
+        </section>
       </div>
     </main>
   );

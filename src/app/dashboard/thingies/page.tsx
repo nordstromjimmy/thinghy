@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ImageIcon } from "lucide-react";
+import ThinghySearchList from "@/components/ThinghySearchList";
+import { redirect } from "next/navigation";
+import { ThinghyCard } from "@/components/ThinghyCard";
 
 export default async function ThinghyListPage() {
   const supabase = createSupabaseServerClient();
@@ -9,7 +12,7 @@ export default async function ThinghyListPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <p className="text-center mt-10 text-white">Not logged in.</p>;
+    redirect("/login");
   }
 
   const { data: thinghies, error } = await supabase
@@ -45,6 +48,33 @@ export default async function ThinghyListPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-white">Your Thinghies</h1>
 
+        <div className="relative w-full md:w-sm">
+          <ThinghySearchList thinghies={thinghies} />
+        </div>
+      </div>
+
+      <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        {/* Left: Categories list (if any) */}
+        <div className="flex-1">
+          <h2 className="text-sm text-gray-400 mb-2">Categories</h2>
+          {categories!.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {categories!.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/dashboard/${encodeURIComponent(cat.name)}`}
+                  className="bg-gray-700 text-white text-sm px-3 py-1.5 rounded hover:bg-gray-600 transition"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-sm italic">No categories yet</p>
+          )}
+        </div>
+
+        {/* Right: Category creation form */}
         <form
           action="/api/category/create"
           method="POST"
@@ -54,34 +84,17 @@ export default async function ThinghyListPage() {
             type="text"
             name="category"
             placeholder="Create new category"
-            className="w-full md:w-64 px-3 py-2 rounded bg-gray-800 text-white border border-gray-600"
+            className="w-full md:w-44 px-2 py-1 rounded bg-[#2a2a3c] text-white border border-gray-600"
             required
           />
           <button
             type="submit"
-            className="bg-yellow-200 text-black px-4 py-2 rounded hover:bg-yellow-300 whitespace-nowrap cursor-pointer"
+            className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 whitespace-nowrap cursor-pointer"
           >
             Create
           </button>
         </form>
       </div>
-
-      {categories!.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-sm text-gray-400 mb-2">Categories</h2>
-          <div className="flex flex-wrap gap-2">
-            {categories?.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/dashboard/${encodeURIComponent(cat.name)}`}
-                className="bg-gray-700 text-white text-sm px-3 py-1.5 rounded hover:bg-gray-600 transition"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
 
       {defaultThinghies.length === 0 ? (
         <p className="text-gray-400">You haven’t saved any Thinghies yet.</p>
@@ -94,14 +107,13 @@ export default async function ThinghyListPage() {
           ))}
         </ul>
       )}
-
       {Object.entries(groupedByCategory).map(([category, items]) => (
         <section key={category} className="mb-12">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-semibold">{category}</h2>
             <Link
               href={`/dashboard/add?category=${encodeURIComponent(category)}`}
-              className="text-sm text-yellow-200 hover:underline"
+              className="text-sm hover:underline"
             >
               + Add a Thinghy to {category}
             </Link>
@@ -116,43 +128,5 @@ export default async function ThinghyListPage() {
         </section>
       ))}
     </main>
-  );
-}
-
-// Extracted ThinghyCard component for reuse
-function ThinghyCard({ thinghy }: { thinghy: any }) {
-  return (
-    <Link
-      href={`/dashboard/thingies/${thinghy.id}`}
-      className="block bg-[#2a2a3c] border border-gray-700 rounded p-4 shadow hover:bg-[#34344a] transition"
-    >
-      <h2 className="text-lg font-semibold text-white">{thinghy.title}</h2>
-      <div className="mt-2 text-sm text-gray-300 space-y-1">
-        {thinghy.fields?.slice(0, 2).map((field: any, index: number) => (
-          <p key={index} className="flex items-center gap-2">
-            <strong>{field.label}:</strong>
-            {field.type === "password" ? (
-              <span className="text-white">••••••</span>
-            ) : field.type === "checkbox" ? (
-              <input
-                type="checkbox"
-                checked={field.value === "true"}
-                readOnly
-                className="w-4 h-4 accent-white"
-              />
-            ) : field.type === "color" ? (
-              <span
-                className="inline-block w-4 h-4 rounded border border-gray-500"
-                style={{ backgroundColor: field.value }}
-              />
-            ) : field.type === "image" && field.value ? (
-              <ImageIcon className="w-4 h-4" />
-            ) : (
-              <span>{field.value}</span>
-            )}
-          </p>
-        ))}
-      </div>
-    </Link>
   );
 }

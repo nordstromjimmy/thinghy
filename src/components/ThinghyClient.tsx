@@ -142,23 +142,6 @@ export default function ThinghyClient({
         />
       </div>
 
-      {isEditing && (
-        <select
-          value={data.category || ""}
-          onChange={(e) =>
-            setData({ ...data, category: e.target.value || null })
-          }
-          className="w-full mt-2 bg-[#2a2a3c] text-white border border-gray-700 rounded px-3 py-2"
-        >
-          <option value="">No Category</option>
-          {categories.map((cat) => (
-            <option key={cat.name} value={cat.name}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-      )}
-
       {isEditing ? (
         <ThinghyForm
           initialTitle={data.title}

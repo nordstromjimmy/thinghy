@@ -1,8 +1,25 @@
 "use client";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { LogoutButton } from "@/components/LogoutButton";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
+import { Menu, X, LogOut, PlusCircle, User, Folder } from "lucide-react";
+import { LogoutButton } from "@/components/LogoutButton";
+
+const navLinks = [
+  {
+    href: "/dashboard/add",
+    label: "Add Thinghy",
+    icon: <PlusCircle size={16} />,
+  },
+  { href: "/dashboard", label: "Dashboard", icon: <Folder size={16} /> },
+  {
+    href: "/dashboard/thingies",
+    label: "Your Thinghies",
+    icon: <Folder size={16} />,
+  },
+  { href: "/dashboard/profile", label: "Profile", icon: <User size={16} /> },
+];
 
 export default function DashboardLayout({
   children,
@@ -10,26 +27,25 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <div className="flex min-h-screen bg-[#1e1e2f] text-white">
-      {/* Mobile Hamburger */}
+      {/* Mobile toggle */}
       {!menuOpen && (
-        <div className="md:hidden fixed top-4 left-4 z-50">
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="text-white bg-gray-800 p-2 rounded-md shadow"
-            aria-label="Open menu"
-          >
-            <Menu />
-          </button>
-        </div>
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="md:hidden fixed top-4 left-4 z-50 bg-gray-800 p-2 rounded-md"
+        >
+          <Menu />
+        </button>
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:static top-0 left-0 h-screen w-64 bg-[#2a2a3c] text-white flex flex-col p-6 z-40 transform transition-transform duration-200 ease-in-out
-    ${menuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        className={`fixed md:static top-0 left-0 h-screen w-64 bg-[#2a2a3c] flex flex-col p-6 z-40 transition-transform duration-200 ease-in-out transform ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
@@ -40,10 +56,9 @@ export default function DashboardLayout({
               height={40}
             />
             <h2 className="text-2xl font-bold">
-              <a href="/dashboard">Thinghy</a>
+              <Link href="/dashboard">Thinghy</Link>
             </h2>
           </div>
-
           <button
             onClick={() => setMenuOpen(false)}
             className="md:hidden text-white bg-white/10 hover:bg-white/20 p-1.5 rounded"
@@ -52,33 +67,21 @@ export default function DashboardLayout({
           </button>
         </div>
 
-        <nav className="flex flex-col gap-4 text-sm">
-          <a
-            href="/dashboard/add"
-            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
-          >
-            Add a new Thinghy
-          </a>
-          <a
-            href="/dashboard"
-            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
-          >
-            Dashboard
-          </a>
-
-          <a
-            href="/dashboard/thingies"
-            className="bg-white text-black text-center px-3 py-2 rounded-md hover:bg-yellow-200 transition"
-          >
-            Your Thinghies
-          </a>
-
-          <div className="flex flex-col pt-6 text-xs text-gray-400">
-            <a href="#" className="mb-6 hover:underline">
-              Settings
-            </a>
-            <LogoutButton />
-          </div>
+        <nav className="flex flex-col gap-2 text-sm">
+          {navLinks.map(({ href, label, icon }) => (
+            <Link key={href} href={href} onClick={() => setMenuOpen(false)}>
+              <div
+                className={`flex items-center gap-2 px-3 py-2 rounded-md transition ${
+                  pathname === href
+                    ? "bg-yellow-200 text-black"
+                    : "bg-white text-black hover:bg-gray-200"
+                }`}
+              >
+                {icon}
+                {label}
+              </div>
+            </Link>
+          ))}
         </nav>
       </aside>
 
