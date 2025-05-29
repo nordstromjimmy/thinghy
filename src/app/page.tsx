@@ -1,6 +1,7 @@
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import Image from "next/image";
+import { Brain, Car, Lightbulb, Package } from "lucide-react";
 
 export const metadata = {
   title: "Thinghy - Your Searchable Brain",
@@ -105,7 +106,10 @@ export default function Home() {
         </h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-gray-700">
           <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
-            <h4 className="font-bold text-lg mb-2">💡 Home & Maintenance</h4>
+            <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+              <Lightbulb className="w-5 h-5 text-yellow-300" /> Home &
+              Maintenance
+            </h4>
             <ul className="list-disc text-gray-300 ml-6">
               <li>HVAC filter size + link to reorder</li>
               <li>Wi-Fi setup for basement router</li>
@@ -113,7 +117,9 @@ export default function Home() {
             </ul>
           </div>
           <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
-            <h4 className="font-bold text-lg mb-2">🚗 Car & Garage</h4>
+            <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+              <Car className="w-5 h-5 text-yellow-300" /> Car & Garage
+            </h4>
             <ul className="list-disc text-gray-300 ml-6">
               <li>Oil type + when it was last changed</li>
               <li>Tire pressure for your winter set</li>
@@ -121,8 +127,9 @@ export default function Home() {
             </ul>
           </div>
           <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
-            <h4 className="font-bold text-lg mb-2">
-              🧠 Life Hacks & Processes
+            <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+              <Brain className="w-5 h-5 text-yellow-300" /> Life Hacks &
+              Processes
             </h4>
             <ul className="list-disc text-gray-300 ml-6">
               <li>How to set up your smart thermostat</li>
@@ -131,7 +138,10 @@ export default function Home() {
             </ul>
           </div>
           <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
-            <h4 className="font-bold text-lg mb-2">📦 Purchases & Products</h4>
+            <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+              <Package className="w-5 h-5 text-yellow-300" /> Purchases &
+              Products
+            </h4>
             <ul className="list-disc text-gray-300 ml-6">
               <li>Where you bought your favorite lightbulbs</li>
               <li>Which HDMI adapter actually worked</li>

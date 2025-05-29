@@ -11,7 +11,7 @@ export function ScrollToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="w-full bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 transition cursor-pointer"
+      className="w-full bg-yellow-300 text-black px-4 py-2 rounded-md hover:bg-yellow-200 transition cursor-pointer"
     >
       Get Early Access
     </button>
