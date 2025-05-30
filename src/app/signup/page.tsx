@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
 import { showErrorToast, showToast } from "@/components/ShowToast";
 
 export default function SignUpPage() {

@@ -1,7 +1,6 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
 
 type Props = {
   src: string; // This is the raw path like "user-id/filename.png"

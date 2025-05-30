@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
 import { showToast, showErrorToast } from "@/components/ShowToast";
 
 export default function UpdatePasswordPage() {

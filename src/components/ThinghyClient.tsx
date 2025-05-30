@@ -6,7 +6,8 @@ import PasswordReveal from "./PasswordReveal";
 import ConfirmModal from "./ConfirmModal";
 import { showErrorToast, showToast } from "./ShowToast";
 import ImageRenderer from "./ImageRenderer";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
+import { MapPin } from "lucide-react";
 
 interface Field {
   id: string;
@@ -24,11 +25,13 @@ type ThinghyClientProps = {
     is_favorite?: boolean;
   };
   categories: { name: string }[];
+  encryptionKey: string;
 };
 
 export default function ThinghyClient({
   thinghy,
   categories,
+  encryptionKey,
 }: ThinghyClientProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -171,6 +174,7 @@ export default function ThinghyClient({
           submitLabel="Save Changes"
           categories={categories}
           defaultCategory={data.category || ""}
+          encryptionKey={encryptionKey}
         />
       ) : (
         <>
@@ -182,7 +186,37 @@ export default function ThinghyClient({
               >
                 <p className="text-sm text-gray-400 mb-1">{field.label}</p>
                 {field.type === "password" ? (
-                  <PasswordReveal value={field.value} />
+                  <PasswordReveal
+                    value={field.value}
+                    encryptionKey={encryptionKey}
+                  />
+                ) : field.type === "location" ? (
+                  <div className="flex flex-col gap-1">
+                    <p className="text-base text-white"></p>
+                    {(field.value.startsWith("http") ||
+                      /^[\d.-]+,[\d.-]+$/.test(field.value.trim())) && (
+                      <a
+                        href={
+                          field.value.startsWith("http")
+                            ? field.value
+                            : `https://maps.google.com/?q=${encodeURIComponent(
+                                field.value
+                              )}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-300 flex items-center gap-2 hover:underline"
+                      >
+                        <MapPin size={16} /> View on map
+                      </a>
+                    )}
+                  </div>
+                ) : field.type === "datetime" || field.type === "date" ? (
+                  <span className="text-white">
+                    {field.value.includes("T")
+                      ? field.value.replace("T", " ")
+                      : field.value}
+                  </span>
                 ) : field.type === "checkbox" ? (
                   <input
                     type="checkbox"

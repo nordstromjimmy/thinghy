@@ -32,6 +32,6 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.redirect(
-    new URL(`/dashboard/category=${encodeURIComponent(name)}`, req.url)
+    new URL(`/dashboard/${encodeURIComponent(name)}`, req.url)
   );
 }

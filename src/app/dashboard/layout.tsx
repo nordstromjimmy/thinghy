@@ -3,8 +3,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, LogOut, PlusCircle, User, Folder } from "lucide-react";
-import { LogoutButton } from "@/components/LogoutButton";
+import { Menu, X, PlusCircle, User, Folder } from "lucide-react";
 
 const navLinks = [
   {
@@ -49,15 +48,15 @@ export default function DashboardLayout({
       >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
+            <h2 className="text-2xl font-bold">
+              <Link href="/dashboard">Thinghy</Link>
+            </h2>
             <Image
               src="/logo.png"
               alt="Thinghy mascot"
               width={40}
               height={40}
             />
-            <h2 className="text-2xl font-bold">
-              <Link href="/dashboard">Thinghy</Link>
-            </h2>
           </div>
           <button
             onClick={() => setMenuOpen(false)}

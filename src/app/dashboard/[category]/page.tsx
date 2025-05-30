@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import CategoryClient from "@/components/CategoryClient";
-import { ImageIcon } from "lucide-react";
 import { ThinghyCard } from "@/components/ThinghyCard";
 
 export default async function CategoryPage({

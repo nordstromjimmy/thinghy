@@ -1,15 +1,29 @@
 "use client";
-import { useState } from "react";
-import { Eye } from "lucide-react";
-import { EyeOff } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { decrypt } from "@/utils/encryption";
 
-export default function PasswordReveal({ value }: { value: string }) {
+export default function PasswordReveal({
+  value,
+  encryptionKey,
+}: {
+  value: string;
+  encryptionKey: string;
+}) {
   const [visible, setVisible] = useState(false);
+
+  const decrypted = useMemo(() => {
+    try {
+      return decrypt(value, encryptionKey); // ✅ correct usage
+    } catch {
+      return "[Error decrypting]";
+    }
+  }, [value, encryptionKey]);
 
   return (
     <div className="flex items-center gap-2">
       <span className="text-base text-white">
-        {visible ? value : "•".repeat(value.length || 8)}
+        {visible ? decrypted : "•".repeat(decrypted.length || 8)}
       </span>
       <button
         onClick={() => setVisible(!visible)}

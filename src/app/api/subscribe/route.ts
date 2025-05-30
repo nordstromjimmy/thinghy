@@ -1,5 +1,5 @@
 import { isRateLimited } from "@/lib/rateLimit";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {

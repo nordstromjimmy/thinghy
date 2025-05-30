@@ -7,11 +7,13 @@ import ThinghyForm from "./ThinghyForm";
 type ThinghyFormWrapperProps = {
   categories: { name: string }[];
   defaultCategory: string;
+  encryptionKey: string;
 };
 
 export default function ThinghyFormWrapper({
   categories,
   defaultCategory,
+  encryptionKey,
 }: ThinghyFormWrapperProps) {
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
@@ -50,6 +52,7 @@ export default function ThinghyFormWrapper({
       isSaving={isSaving}
       categories={categories}
       defaultCategory={defaultCategory}
+      encryptionKey={encryptionKey}
     />
   );
 }

@@ -1,8 +1,7 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { createBrowserClient } from "@/lib/supabase";
+import { createBrowserClient } from "@/lib/supabase-browser";
 import { showToast, showErrorToast } from "@/components/ShowToast";
 import { LogOut, Trash2, Mail } from "lucide-react";
 import { KeyRound } from "lucide-react";

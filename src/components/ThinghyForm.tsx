@@ -1,13 +1,12 @@
 "use client";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Loader2, Save } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { AVAILABLE_FIELDS } from "@/types/fields";
 import ImageRenderer from "./ImageRenderer";
-import { Eye } from "lucide-react";
-import { EyeOff } from "lucide-react";
 import { Upload } from "lucide-react";
 import { showErrorToast } from "./ShowToast";
+import { decrypt, encrypt } from "@/utils/encryption";
 
 type Field = {
   id: string;
@@ -30,6 +29,7 @@ type ThinghyFormProps = {
   submitLabel?: string;
   categories?: { name: string }[];
   defaultCategory?: string;
+  encryptionKey: string;
 };
 
 function getInputAttributes(fieldType: string): {
@@ -44,6 +44,8 @@ function getInputAttributes(fieldType: string): {
     case "number":
     case "currency":
     case "rating":
+    case "location":
+      return { type: "url", inputMode: "url" };
     case "duration":
       return { type: "number", inputMode: "decimal" };
     case "url":
@@ -69,11 +71,33 @@ export default function ThinghyForm({
   submitLabel = "Save Thinghy",
   categories = [],
   defaultCategory = "",
+  encryptionKey,
 }: ThinghyFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [category, setCategory] = useState<string>(defaultCategory || "");
-  const [fields, setFields] = useState<Field[]>(initialFields);
+  const [fields, setFields] = useState<Field[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [hasDecrypted, setHasDecrypted] = useState(false);
+
+  useEffect(() => {
+    if (!hasDecrypted && initialFields && initialFields.length > 0) {
+      const decrypted = initialFields.map((field) => {
+        if (field.type === "password" && field.value) {
+          try {
+            const decryptedValue = decrypt(field.value, encryptionKey);
+            return { ...field, value: decryptedValue };
+          } catch (err) {
+            console.warn("Failed to decrypt:", err);
+            return { ...field, value: "" };
+          }
+        }
+        return field;
+      });
+
+      setFields(decrypted);
+      setHasDecrypted(true);
+    }
+  }, [initialFields, hasDecrypted]);
 
   const handleAddField = (type: string) => {
     const def = AVAILABLE_FIELDS.find((f) => f.id === type);
@@ -90,8 +114,25 @@ export default function ThinghyForm({
       showErrorToast("Add a Title to save");
       return;
     }
+
+    const res = await fetch("/api/get-user");
+    const user = await res.json();
+    if (!user) {
+      showErrorToast("You must be logged in");
+      return;
+    }
+
     const preparedFields = await Promise.all(
       fields.map(async (f) => {
+        // ✅ Encrypt password field
+        if (f.type === "password" && f.value) {
+          return {
+            ...f,
+            value: encrypt(f.value, encryptionKey),
+          };
+        }
+
+        // ✅ Upload image if present
         if (f.type === "image" && f.file) {
           const formData = new FormData();
           formData.append("file", f.file);
@@ -126,30 +167,33 @@ export default function ThinghyForm({
 
   return (
     <div className="py-6 max-w-full mx-auto sm:max-w-5xl flex flex-col items-center justify-start bg-[#1e1e2f] text-white">
-      {/* Title */}
-      <input
-        type="text"
-        placeholder="Thinghy Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="text-2xl font-bold text-center bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm w-full max-w-md mb-8 focus:outline-none focus:ring-2 focus:ring-white"
-      />
-      {categories && categories.length > 0 && (
-        <div className="mb-6">
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-44 bg-[#2a2a3c] border border-gray-700 text-white rounded px-2 py-1"
-          >
-            <option value="">No Category</option>
-            {categories.map((cat) => (
-              <option key={cat.name} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+      <div className="w-full max-w-md mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <input
+          type="text"
+          placeholder="Thinghy Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="flex-1 text-2xl font-bold bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-white"
+        />
+
+        {categories.length > 0 && (
+          <div className="flex flex-col w-full sm:w-44">
+            <label className="text-xs text-gray-400 mb-1">Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="bg-[#2a2a3c] border border-gray-700 text-white rounded px-2 py-1"
+            >
+              <option value="">No Category</option>
+              {categories.map((cat) => (
+                <option key={cat.name} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
       {/* Add Field Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-8">
         {AVAILABLE_FIELDS.map((field) => (
@@ -258,10 +302,63 @@ export default function ThinghyForm({
                   />
                 </label>
 
-                {/* Info Text */}
                 <p className="text-xs text-gray-400">
                   Max file size 5MB. Supported: JPG, PNG, WEBP.
                 </p>
+              </div>
+            ) : field.type === "tags" ? (
+              <input
+                type="text"
+                value={field.value}
+                onChange={(e) => {
+                  const input = e.target.value;
+
+                  if (input.endsWith(" ")) {
+                    const tags =
+                      input
+                        .trim()
+                        .split(" ")
+                        .filter(Boolean)
+                        .map((tag) => {
+                          const cleaned = tag.replace(/^#+/, "");
+                          return `#${cleaned}`;
+                        })
+                        .join(" ") + " ";
+
+                    updateField(field.id, tags);
+                  } else {
+                    updateField(field.id, input);
+                  }
+                }}
+                placeholder="#groceries #todo #work"
+                className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-white"
+              />
+            ) : field.type === "location" ? (
+              <div className="flex flex-col gap-1">
+                <input
+                  type="text"
+                  value={field.value}
+                  onChange={(e) => updateField(field.id, e.target.value)}
+                  className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+                  placeholder="e.g enter address, coordinates or Google Maps URL"
+                />
+
+                {field.value &&
+                  (field.value.startsWith("http") ||
+                    /^[\d.-]+,[\d.-]+$/.test(field.value.trim())) && (
+                    <a
+                      href={
+                        field.value.startsWith("http")
+                          ? field.value
+                          : `https://maps.google.com/?q=${encodeURIComponent(
+                              field.value
+                            )}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-400 hover:underline"
+                    ></a>
+                  )}
               </div>
             ) : field.type === "checkbox" ? (
               <label className="flex items-center gap-2 text-sm">
@@ -276,36 +373,19 @@ export default function ThinghyForm({
                 {field.label}
               </label>
             ) : field.type === "password" ? (
-              <div className="relative">
-                <input
-                  type={field.showPassword ? "text" : "password"}
-                  value={field.value}
-                  onChange={(e) =>
-                    setFields((prev) =>
-                      prev.map((f) =>
-                        f.id === field.id ? { ...f, value: e.target.value } : f
-                      )
+              <input
+                type="text"
+                value={field.value}
+                onChange={(e) =>
+                  setFields((prev) =>
+                    prev.map((f) =>
+                      f.id === field.id ? { ...f, value: e.target.value } : f
                     )
-                  }
-                  className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 pr-10 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    setFields((prev) =>
-                      prev.map((f) =>
-                        f.id === field.id
-                          ? { ...f, showPassword: !f.showPassword }
-                          : f
-                      )
-                    )
-                  }
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-white text-sm"
-                  title="Toggle password visibility"
-                >
-                  {field.showPassword ? <EyeOff /> : <Eye />}
-                </button>
-              </div>
+                  )
+                }
+                className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+                placeholder="Enter password"
+              />
             ) : field.type === "notes" ? (
               <textarea
                 value={field.value}
@@ -379,12 +459,20 @@ export default function ThinghyForm({
       {/* Save Button */}
       <div className="w-full max-w-md mt-8 text-center">
         <button
-          disabled={isSaving}
           onClick={handleSubmit}
-          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center mx-auto gap-2 cursor-pointer"
+          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center mx-auto gap-2"
         >
-          {isSaving && <Loader2 className="animate-spin w-4 h-4" />}
-          {isSaving ? "Saving..." : submitLabel}
+          {isSaving ? (
+            <>
+              <Loader2 className="animate-spin w-4 h-4" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              {submitLabel}
+            </>
+          )}
         </button>
       </div>
     </div>

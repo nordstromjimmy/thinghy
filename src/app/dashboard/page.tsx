@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   return (
     <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
       <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c] rounded-xl shadow-md">
-        <h1 className="text-3xl font-bold mb-3">👋 Welcome to Thinghy</h1>
+        <h1 className="text-3xl font-bold mb-3">Welcome to Thinghy</h1>
         <p className="text-gray-400 mb-8 max-w-lg text-center text-sm sm:text-base">
           Thinghy is your second brain – a safe place to store and organize
           anything you don't want to forget.

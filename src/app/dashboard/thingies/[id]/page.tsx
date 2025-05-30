@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getOrCreateEncryptionKey } from "@/lib/getOrCreateEncryptionKey";
 import ThinghyClient from "@/components/ThinghyClient";
 import { notFound } from "next/navigation";
 
@@ -9,6 +10,7 @@ export default async function ThinghyPage({
 }) {
   const { id } = await params;
   const supabase = createSupabaseServerClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -30,5 +32,14 @@ export default async function ThinghyPage({
     .eq("user_id", user.id)
     .order("name", { ascending: true });
 
-  return <ThinghyClient thinghy={thinghy} categories={categories || []} />;
+  // 🔐 Get encryption key
+  const encryptionKey = await getOrCreateEncryptionKey(user.id);
+
+  return (
+    <ThinghyClient
+      thinghy={thinghy}
+      categories={categories || []}
+      encryptionKey={encryptionKey}
+    />
+  );
 }
