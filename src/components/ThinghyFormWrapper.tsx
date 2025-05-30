@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { showToast, showErrorToast } from "@/components/ShowToast";
-import ThinghyForm from "./ThinghyForm";
+import ThinghyForm from "./ThinghyForm/ThinghyForm";
 
 type ThinghyFormWrapperProps = {
   categories: { name: string }[];

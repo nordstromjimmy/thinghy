@@ -54,7 +54,7 @@ export default function SettingsPage() {
   };
 
   const handleDeleteAccount = async () => {
-    const confirmed = confirm("Not implemented yet");
+    const confirmed = confirm("Coming Soon");
     if (!confirmed) return;
   };
 

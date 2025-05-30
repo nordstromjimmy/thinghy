@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ThinghyForm from "./ThinghyForm";
+import ThinghyForm from "./ThinghyForm/ThinghyForm";
 import PasswordReveal from "./PasswordReveal";
 import ConfirmModal from "./ConfirmModal";
 import { showErrorToast, showToast } from "./ShowToast";
-import ImageRenderer from "./ImageRenderer";
 import { createBrowserClient } from "@/lib/supabase-browser";
 import { MapPin } from "lucide-react";
 
@@ -233,7 +232,11 @@ export default function ThinghyClient({
                     <span className="text-xs text-gray-400">{field.value}</span>
                   </div>
                 ) : field.type === "image" && signedUrls[field.id] ? (
-                  <ImageRenderer src={field.value} alt={field.label} />
+                  <img
+                    src={signedUrls[field.id]}
+                    alt={field.label}
+                    className="w-full max-w-xs h-auto rounded border border-gray-600"
+                  />
                 ) : (
                   <p className="text-base text-white">{field.value}</p>
                 )}

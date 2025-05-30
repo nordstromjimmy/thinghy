@@ -45,7 +45,6 @@ export function ThinghyCard({ thinghy }: { thinghy: any }) {
                   className="text-blue-300 hover:underline flex items-center gap-1"
                 >
                   <MapPin size={16} />
-                  <span>Google Maps location</span>
                 </a>
               ) : (
                 <span className="truncate">{field.value}</span>

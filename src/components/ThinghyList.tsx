@@ -48,12 +48,6 @@ export default function ThinghyList({
     }
   };
 
-  if (!thinghies || thinghies.length === 0) {
-    return (
-      <p className="text-gray-400">{emptyMessage || "No thinghies yet."}</p>
-    );
-  }
-
   return (
     <div className="mb-10">
       {/* Sort Toggle Button */}
