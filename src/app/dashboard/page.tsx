@@ -34,10 +34,10 @@ export default async function DashboardPage() {
         </p>
 
         <section className="bg-[#1e1e2f] border border-gray-700 rounded-xl p-6 w-full max-w-2xl shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">🚀 How to Use Thinghy</h2>
+          <h2 className="text-xl font-semibold mb-4">How to Use Thinghy</h2>
           <ul className="space-y-4 text-sm text-gray-300">
             <li className="flex gap-2 items-start">
-              <PlusCircle className="mt-0.5 text-yellow-300" size={18} />
+              <PlusCircle className="mt-0.5 text-blue-300" size={18} />
               <span>
                 <strong>Add a Thinghy</strong> to capture anything: codes,
                 processes, ideas, or notes.
@@ -51,21 +51,21 @@ export default async function DashboardPage() {
               </span>
             </li>
             <li className="flex gap-2 items-start">
-              <ShieldCheck className="mt-0.5 text-green-300" size={18} />
+              <ShieldCheck className="mt-0.5 text-blue-300" size={18} />
               <span>
                 <strong>Passwords are secure</strong> by default. Toggle to
                 show/hide anytime.
               </span>
             </li>
             <li className="flex gap-2 items-start">
-              <Eye className="mt-0.5 text-purple-300" size={18} />
+              <Eye className="mt-0.5 text-blue-300" size={18} />
               <span>
                 <strong>View your Thinghies</strong> in clean list and detail
                 formats.
               </span>
             </li>
             <li className="flex gap-2 items-start">
-              <BookText className="mt-0.5 text-pink-300" size={18} />
+              <BookText className="mt-0.5 text-blue-300" size={18} />
               <span>
                 <strong>Edit freely</strong> – reorder fields, update values, or
                 switch categories.

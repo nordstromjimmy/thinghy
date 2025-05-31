@@ -5,8 +5,6 @@ import { SlidersHorizontal } from "lucide-react";
 
 export default function ThinghyList({
   thinghies,
-  emptyMessage,
-  encryptionKey,
 }: {
   thinghies: any[];
   emptyMessage?: string;

@@ -3,15 +3,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase-browser";
 import { showToast, showErrorToast } from "@/components/ShowToast";
-import { LogOut, Trash2, Mail } from "lucide-react";
+import { Trash2, Mail } from "lucide-react";
 import { KeyRound } from "lucide-react";
 import { LogoutButton } from "@/components/LogoutButton";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function SettingsPage() {
   const router = useRouter();
   const supabase = createBrowserClient();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  let isGoogleUser;
 
   useEffect(() => {
     (async () => {
@@ -19,6 +23,8 @@ export default function SettingsPage() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
+
+      isGoogleUser = user?.app_metadata?.provider === "google";
 
       if (error || !user) {
         router.push("/login");
@@ -28,7 +34,7 @@ export default function SettingsPage() {
       setEmail(user.email || "");
       setLoading(false);
     })();
-  }, []);
+  }, [isGoogleUser]);
 
   const handlePasswordReset = async () => {
     const {
@@ -54,8 +60,24 @@ export default function SettingsPage() {
   };
 
   const handleDeleteAccount = async () => {
-    const confirmed = confirm("Coming Soon");
-    if (!confirmed) return;
+    const res = await fetch("/api/delete-account", {
+      method: "POST",
+    });
+
+    const result = await res.json();
+
+    if (result.error) {
+      showErrorToast("Failed to delete account: " + result.error);
+      setShowConfirm(false);
+      return;
+    }
+    showToast("Account successfully deleted.");
+    setShowConfirm(false);
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Optionally redirect or clear local session
+    window.location.href = "/";
   };
 
   if (loading)
@@ -74,13 +96,15 @@ export default function SettingsPage() {
             <span className="text-base font-medium">{email}</span>
           </div>
           <div>
-            <button
-              onClick={handlePasswordReset}
-              className="flex items-center gap-2 rounded text-white hover:text-gray-300 hover:underline transition cursor-pointer"
-            >
-              <KeyRound size={18} />
-              Reset Password
-            </button>
+            {isGoogleUser && (
+              <button
+                onClick={handlePasswordReset}
+                className="flex items-center gap-2 rounded text-white hover:text-gray-300 hover:underline transition cursor-pointer"
+              >
+                <KeyRound size={18} />
+                Reset Password
+              </button>
+            )}
           </div>
         </div>
 
@@ -104,7 +128,7 @@ export default function SettingsPage() {
             Permanently delete your account and all associated Thinghies.
           </p>
           <button
-            onClick={handleDeleteAccount}
+            onClick={() => setShowConfirm(true)}
             className="flex items-center gap-2 bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-white transition"
           >
             <Trash2 size={18} />
@@ -112,6 +136,15 @@ export default function SettingsPage() {
           </button>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={showConfirm}
+        title={"Delete account"}
+        description="Are you sure you want to delete your account? This action cannot be undone."
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onCancel={() => setShowConfirm(false)}
+        onConfirm={handleDeleteAccount}
+      />
     </main>
   );
 }

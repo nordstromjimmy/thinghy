@@ -1,7 +1,5 @@
 "use client";
 
-import { ReactNode } from "react";
-
 type ConfirmModalProps = {
   isOpen: boolean;
   title: string;

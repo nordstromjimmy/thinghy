@@ -3,7 +3,14 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, PlusCircle, User, Folder } from "lucide-react";
+import {
+  Menu,
+  X,
+  PlusCircle,
+  User,
+  Folder,
+  LayoutDashboard,
+} from "lucide-react";
 
 const navLinks = [
   {
@@ -11,7 +18,11 @@ const navLinks = [
     label: "Add Thinghy",
     icon: <PlusCircle size={16} />,
   },
-  { href: "/dashboard", label: "Dashboard", icon: <Folder size={16} /> },
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: <LayoutDashboard size={16} />,
+  },
   {
     href: "/dashboard/thingies",
     label: "Your Thinghies",

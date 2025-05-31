@@ -210,7 +210,7 @@ export default function ThinghyForm({
         <button
           onClick={handleSubmit}
           disabled={isSaving}
-          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 flex items-center mx-auto gap-2"
+          className="bg-white text-black px-6 py-2 rounded hover:bg-gray-200 transition disabled:opacity-40 flex items-center mx-auto gap-2 cursor-pointer"
         >
           {isSaving ? (
             <>

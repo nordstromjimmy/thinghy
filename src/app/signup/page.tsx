@@ -1,32 +1,39 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase-browser";
-import { showErrorToast, showToast } from "@/components/ShowToast";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [formError, setFormError] = useState("");
 
   const supabase = createBrowserClient();
 
-  useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "SIGNED_IN") {
-          router.push("/dashboard");
-        }
-      }
-    );
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, [router]);
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+    setFormError("");
+
+    if (!isValidEmail(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Password cannot be empty.");
+      return;
+    }
+
     setLoading(true);
 
     const { error } = await supabase.auth.signUp({
@@ -38,10 +45,22 @@ export default function SignUpPage() {
     });
 
     if (error) {
-      showErrorToast(error.message);
+      setFormError(error.message || "Something went wrong. Try again.");
       setLoading(false);
+      return;
     }
-    showToast("Your account was created!");
+    setLoading(false);
+    router.push("/dashboard");
+  };
+
+  const handleGoogleLogin = async () => {
+    const supabase = createBrowserClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
   };
 
   return (
@@ -61,11 +80,16 @@ export default function SignUpPage() {
               id="email"
               type="email"
               required
-              className="w-full px-4 py-2 rounded bg-[#1e1e2f] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className={`w-full text-white px-4 py-2 border rounded ${
+                emailError ? "border-red-500" : ""
+              }`}
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {emailError && (
+              <p className="text-red-400 text-sm mt-1">{emailError}</p>
+            )}
           </div>
 
           <div>
@@ -79,19 +103,38 @@ export default function SignUpPage() {
               id="password"
               type="password"
               required
-              className="w-full px-4 py-2 rounded bg-[#1e1e2f] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className={`w-full text-white px-4 py-2 border rounded ${
+                passwordError ? "border-red-500" : ""
+              }`}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {passwordError && (
+              <p className="text-red-400 text-sm mt-1">{passwordError}</p>
+            )}
           </div>
+
+          {formError && (
+            <div className="text-center text-red-400 text-sm mb-4">
+              {formError}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full py-2 bg-yellow-200 hover:bg-yellow-300 text-black font-semibold rounded transition disabled:opacity-50 cursor-pointer"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-100 py-2 rounded transition mb-4 cursor-pointer"
+          >
+            <img src="/google-icon.svg" alt="Google" className="w-7 h-7" />
+            Sign in with Google
           </button>
         </form>
 

@@ -9,10 +9,31 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     const supabase = createBrowserClient();
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+    setFormError("");
+
+    if (!isValidEmail(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Password cannot be empty.");
+      return;
+    }
+
     setLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -21,7 +42,7 @@ export default function LoginPage() {
     });
 
     if (error) {
-      showErrorToast(error.message);
+      setFormError("Invalid email or password.");
       setLoading(false);
       return;
     }
@@ -31,13 +52,22 @@ export default function LoginPage() {
     } = await supabase.auth.getSession();
 
     if (session) {
-      showToast("You are logged in!");
-
       router.push("/dashboard");
     } else {
-      showErrorToast("Login failed. Please check your credentials.");
+      setFormError("Login failed. Please try again.");
     }
+
     setLoading(false);
+  };
+
+  const handleGoogleLogin = async () => {
+    const supabase = createBrowserClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
   };
 
   return (
@@ -57,11 +87,16 @@ export default function LoginPage() {
               id="email"
               type="email"
               required
-              className="w-full px-4 py-2 rounded bg-[#1e1e2f] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className={`w-full text-white px-4 py-2 border rounded ${
+                emailError ? "border-red-500" : ""
+              }`}
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {emailError && (
+              <p className="text-red-400 text-sm mt-1">{emailError}</p>
+            )}
           </div>
 
           <div>
@@ -75,12 +110,23 @@ export default function LoginPage() {
               id="password"
               type="password"
               required
-              className="w-full px-4 py-2 rounded bg-[#1e1e2f] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className={`w-full text-white px-4 py-2 border rounded ${
+                passwordError ? "border-red-500" : ""
+              }`}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {passwordError && (
+              <p className="text-red-400 text-sm mt-1">{passwordError}</p>
+            )}
           </div>
+
+          {formError && (
+            <div className="text-center text-red-400 text-sm mb-4">
+              {formError}
+            </div>
+          )}
 
           <button
             type="submit"
@@ -88,6 +134,14 @@ export default function LoginPage() {
             className="w-full py-2 bg-yellow-200 hover:bg-yellow-300 text-black font-semibold rounded transition disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}
+          </button>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-100 py-2 rounded transition mb-4 cursor-pointer"
+          >
+            <img src="/google-icon.svg" alt="Google" className="w-7 h-7" />
+            Sign in with Google
           </button>
         </form>
 

@@ -93,6 +93,17 @@ export default function ThinghyField({
       );
     }
 
+    if (field.type === "phone") {
+      return (
+        <input
+          type="number"
+          value={field.value}
+          onChange={handleValueChange}
+          className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+        />
+      );
+    }
+
     if (field.type === "password") {
       return (
         <input
@@ -101,6 +112,18 @@ export default function ThinghyField({
           onChange={(e) => onChange(field.id, e.target.value)}
           className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
           placeholder="Enter password"
+        />
+      );
+    }
+
+    if (field.type === "email") {
+      return (
+        <input
+          type="email"
+          value={field.value}
+          onChange={(e) => onChange(field.id, e.target.value)}
+          className="w-full text-sm bg-[#2a2a3c] border border-gray-700 px-3 py-2 rounded placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white"
+          placeholder="Enter email"
         />
       );
     }

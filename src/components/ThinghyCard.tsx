@@ -36,7 +36,7 @@ export function ThinghyCard({ thinghy }: { thinghy: any }) {
                   : field.value}
               </span>
             ) : field.type === "location" ? (
-              field.value.includes("google.com/maps") ? (
+              field.value.includes("maps") ? (
                 <a
                   href={field.value}
                   target="_blank"
