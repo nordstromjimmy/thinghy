@@ -1,4 +1,3 @@
-// components/CategoryCreateForm.tsx
 export default function CategoryCreateForm() {
   return (
     <form

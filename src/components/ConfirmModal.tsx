@@ -1,5 +1,4 @@
 "use client";
-
 type ConfirmModalProps = {
   isOpen: boolean;
   title: string;
