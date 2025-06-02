@@ -1,7 +1,7 @@
-import { ScrollToTopButton } from "@/components/ScrollToTopButton";
-import { WaitlistForm } from "@/components/WaitlistForm";
 import Image from "next/image";
 import { Brain, Car, Lightbulb, Package } from "lucide-react";
+import { LandingHeader } from "@/components/LandingHeader";
+import ZoomableImage from "@/components/ZoomableImage";
 
 export const metadata = {
   title: "Thinghy - Your Searchable Brain",
@@ -41,7 +41,8 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="bg-[#1e1e2f] text-gray-900">
+    <main className="bg-[#1e1e2f] text-gray-900 ">
+      <LandingHeader />
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
         <Image
@@ -56,16 +57,30 @@ export default function Home() {
           Your searchable brain
         </h2>
         <p className="text-xl max-w-2xl text-white mb-6">
-          Thinghy helps you remember all the little things, fixes, purchases,
-          and “how did I do that again?” moments - so you never have to solve
-          the same problem twice.
+          Ditch your boring note-taking app. Thinghy is your smarter, structured
+          memory - built to keep fixes, purchases, and “how did I do that?”
+          moments in one organized place.
         </p>
-        <WaitlistForm />
+        <div className="flex gap-4 justify-center">
+          <a
+            href="/signup"
+            className="bg-yellow-300 text-black font-semibold px-6 py-2 rounded hover:bg-yellow-400 transition"
+          >
+            Get Started
+          </a>
+          <a
+            href="/login"
+            className="border border-yellow-300 text-yellow-300 px-6 py-2 rounded hover:bg-yellow-300 hover:text-black transition"
+          >
+            Log In
+          </a>
+        </div>
         {/* Scroll indicator */}
         <div className="mt-12 animate-bounce text-white text-3xl">↓</div>
       </section>
 
       {/* Feature Highlights */}
+      <div id="why" className="py-30 bgbg-[#1e1e2f]"></div>
       <section className="py-20 bg-[#2a2a3c] px-6 text-center">
         <h2 className="text-3xl text-white font-semibold mb-6">Why Thinghy?</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -92,17 +107,51 @@ export default function Home() {
               Searchable & Structured
             </h3>
             <p className="text-gray-300">
-              Forget scrolling through random notes. Search by keyword,
-              category, or even tag like “filters” or “car.”
+              Forget scrolling through random notes. Find what you are looking
+              for fast.
             </p>
           </div>
         </div>
       </section>
 
+      <div id="how-it-works" className="py-30 bgbg-[#1e1e2f]"></div>
+      <section className="text-white px-6 max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-10">How It Works</h2>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">
+              1. Keep everything in one place
+            </h3>
+            <p className="text-gray-300">
+              Keep all your importent Thinghies in one place, nicely sorted in
+              groups, by name or date.
+            </p>
+            <ZoomableImage
+              src="/howitworks1.png"
+              alt="Preview"
+              className="w-full rounded border border-gray-600 shadow"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">2. Detailed view</h3>
+            <p className="text-gray-300">
+              Every Thinghy has its own page with clean, structured fields. Add
+              passwords, tags, images, and more — no clutter, just clarity.
+            </p>
+            <ZoomableImage
+              src="/howitworks2.png"
+              alt="Preview"
+              className="w-full rounded border border-gray-600 shadow"
+            />
+          </div>
+        </div>
+      </section>
+      <div className="py-30 bg-[#1e1e2f]"></div>
       {/* Example Use Cases */}
-      <section className="py-20 px-6">
+      <section className="py-6 px-6 bg-[#2a2a3c]">
         <h2 className="text-3xl text-white font-semibold mb-8 text-center">
-          What Could You Save in Thinghy?
+          Examples of What You Could Save in Thinghy
         </h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-gray-700">
           <div className="p-6 border rounded-xl bg-[#2a2a3c] text-white shadow transition-transform transform hover:-translate-y-1 hover:shadow-lg hover:border-gray-300 hover:cursor-default">
@@ -150,16 +199,20 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <div className="py-20 bgbg-[#1e1e2f]"></div>
       {/* CTA Footer */}
       <section className="py-20 bg-[#2a2a3c] text-white text-center">
-        <h2 className="text-3xl font-bold mb-4">Thinghy is launching soon.</h2>
+        <h2 className="text-3xl font-bold mb-4">Ready to unload your brain?</h2>
         <p className="mb-6">
-          Unload your brain. Find it later. Join the early access list.
+          Start saving fixes, facts, and thinghs you do not want to forget
+          today!
         </p>
-        <div className="w-full max-w-sm mx-auto mt-18">
-          <ScrollToTopButton></ScrollToTopButton>
-        </div>
+        <a
+          href="/signup"
+          className="bg-yellow-300 hover:bg-yellow-400 text-black px-6 py-2 rounded font-semibold transition"
+        >
+          Create Your Free Account
+        </a>
 
         {/* Footer Links */}
         <div className="mt-8 text-sm text-gray-400 flex justify-center">

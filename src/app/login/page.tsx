@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase-browser";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -71,9 +72,17 @@ export default function LoginPage() {
 
   return (
     <main className="bg-[#1e1e2f] min-h-screen flex flex-col justify-center items-center px-4">
+      <Image
+        src="/logo.png"
+        alt="Thinghy mascot logo"
+        width={200}
+        height={100}
+        className="mb-6 transition-transform transform hover:-translate-y-2"
+      />
       <h1 className="text-center text-4xl font-bold text-yellow-200 mb-4">
         Thinghy
       </h1>
+
       <div className="w-full max-w-sm bg-[#2a2a3c] border border-gray-700 rounded-xl shadow-md p-8">
         <p className="text-center text-3xl text-white mb-8">Login</p>
 
@@ -130,7 +139,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-yellow-200 hover:bg-yellow-300 text-black font-semibold rounded transition disabled:opacity-50 cursor-pointer"
+            className="w-full py-2 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold rounded transition disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -148,7 +157,7 @@ export default function LoginPage() {
           Don't have an account?{" "}
           <a
             href="/signup"
-            className="text-yellow-200 hover:underline cursor-pointer"
+            className="text-yellow-300 hover:underline cursor-pointer"
           >
             Sign up
           </a>

@@ -53,8 +53,8 @@ export default async function DashboardPage() {
             <li className="flex gap-2 items-start">
               <ShieldCheck className="mt-0.5 text-blue-300" size={18} />
               <span>
-                <strong>Passwords are secure</strong> by default. Toggle to
-                show/hide anytime.
+                <strong>Passwords are secure and encrypted</strong> by default.
+                Toggle to show/hide anytime.
               </span>
             </li>
             <li className="flex gap-2 items-start">

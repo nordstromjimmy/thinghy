@@ -7,6 +7,7 @@ import ThinghyField from "./ThinghyField";
 import { showErrorToast } from "../ShowToast";
 import { decrypt, encrypt } from "@/utils/encryption";
 import type { Field } from "@/types/Field";
+import { showError } from "../ShowError";
 
 type Props = {
   initialTitle?: string;
@@ -37,6 +38,7 @@ export default function ThinghyForm({
   const [category, setCategory] = useState(defaultCategory);
   const [fields, setFields] = useState<Field[]>([]);
   const [hasDecrypted, setHasDecrypted] = useState(false);
+  const [titleError, setTitleError] = useState("");
 
   useEffect(() => {
     if (!hasDecrypted && initialFields && initialFields.length > 0) {
@@ -59,8 +61,10 @@ export default function ThinghyForm({
   }, [initialFields, hasDecrypted]);
 
   const handleSubmit = async () => {
+    setTitleError("");
     if (!title.trim()) {
-      showErrorToast("Add a Title to save");
+      //showErrorToast("Add a Title to save");
+      setTitleError("Add a Title to save");
       return;
     }
 
@@ -154,7 +158,9 @@ export default function ThinghyForm({
           placeholder="Thinghy Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="flex-1 text-2xl font-bold bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-white"
+          className={`flex-1 text-2xl font-bold bg-[#2a2a3c] border border-gray-700 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-white ${
+            titleError ? "border-red-500" : ""
+          }`}
         />
 
         {categories.length > 0 && (
@@ -175,7 +181,7 @@ export default function ThinghyForm({
           </div>
         )}
       </div>
-
+      {titleError && <p className="text-red-400 text-sm mb-4">{titleError}</p>}
       {/* Add Field Buttons */}
       <div className="flex flex-wrap justify-center gap-3 mb-8">
         {AVAILABLE_FIELDS.map((field) => (
