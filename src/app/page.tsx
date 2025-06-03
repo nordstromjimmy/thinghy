@@ -75,13 +75,11 @@ export default function Home() {
             Log In
           </a>
         </div>
-        {/* Scroll indicator */}
         <div className="mt-12 animate-bounce text-white text-3xl">↓</div>
       </section>
 
       {/* Feature Highlights */}
-      <div id="why" className="py-30 bgbg-[#1e1e2f]"></div>
-      <section className="py-20 bg-[#2a2a3c] px-6 text-center">
+      <section id="why" className="py-20 bg-[#2a2a3c] px-6 text-center">
         <h2 className="text-3xl text-white font-semibold mb-6">Why Thinghy?</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="transition-transform transform hover:-translate-x-1 hover:cursor-default">

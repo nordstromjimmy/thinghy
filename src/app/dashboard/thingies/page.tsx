@@ -47,19 +47,26 @@ export default async function ThinghyListPage() {
 
       <CategoryToggleSection categories={categories!} />
 
-      <ThinghyList
-        thinghies={defaultThinghies}
-        emptyMessage="You haven’t saved any Thinghies yet."
-        encryptionKey={encryptionKey}
-      />
+      {thinghies!.length === 0 ? (
+        <p className="text-gray-400 text-center mt-10">
+          You haven’t saved any Thinghies yet.
+        </p>
+      ) : (
+        <>
+          <ThinghyList
+            thinghies={defaultThinghies}
+            encryptionKey={encryptionKey}
+          />
 
-      {Object.entries(groupedByCategory).map(([category, items]) => (
-        <CollapsibleCategory
-          key={category}
-          category={category}
-          items={items!}
-        />
-      ))}
+          {Object.entries(groupedByCategory).map(([category, items]) => (
+            <CollapsibleCategory
+              key={category}
+              category={category}
+              items={items!}
+            />
+          ))}
+        </>
+      )}
     </main>
   );
 }

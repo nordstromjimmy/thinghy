@@ -1,10 +1,11 @@
 "use client";
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { ThinghyCard } from "./ThinghyCard";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function ThinghyList({
   thinghies,
+  emptyMessage,
 }: {
   thinghies: any[];
   emptyMessage?: string;
@@ -84,7 +85,6 @@ export default function ThinghyList({
           </button>
         </div>
       )}
-
       {/* Sorted List */}
       <ul className="space-y-4">
         {sortedThinghies.map((thinghy) => (

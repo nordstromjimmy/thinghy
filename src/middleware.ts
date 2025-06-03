@@ -1,36 +1,50 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export function middleware(req: NextRequest) {
-  // 🔁 Disable middleware during development
-  if (process.env.NODE_ENV === "development") {
-    return NextResponse.next();
-  }
+// Publicly accessible routes
+const publicRoutes = ["/", "/login", "/signup", "/privacy", "/terms"];
 
-  const publicRoutes = [
-    "/",
-    "/terms",
-    "/privacy",
-    "/sitemap.xml",
-    "/robots.txt",
-    "/favicon.ico",
-    "/og-image.jpg",
-  ];
-  const { pathname } = req.nextUrl;
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
 
-  const isApi = pathname.startsWith("/api/");
-
-  const isPublic = publicRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route + "/")
+  // Create Supabase client with request cookies
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => req.cookies.getAll(),
+        setAll: (cookies) =>
+          cookies.forEach(({ name, value, options }) =>
+            res.cookies.set(name, value, options)
+          ),
+      },
+    }
   );
 
-  if (isPublic || isApi) return NextResponse.next();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return NextResponse.redirect(new URL("/", req.url));
+  const { pathname } = req.nextUrl;
+
+  // ✅ 1. Redirect logged-in user away from landing/login/signup to dashboard
+  if (user && ["/", "/login", "/signup"].includes(pathname)) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  // ✅ 2. Block unauthenticated access to dashboard routes
+  const isProtectedRoute = pathname.startsWith("/dashboard");
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return res;
 }
+
+// 🔁 Apply middleware to all relevant routes
 export const config = {
   matcher: [
-    // Ignore static/internal assets AND root-level public images
-    "/((?!_next/static|_next/image|api|favicon.ico|robots.txt|sitemap.xml|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.webp$|.*\\.svg$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
   ],
 };
