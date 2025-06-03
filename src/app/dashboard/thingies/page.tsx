@@ -37,7 +37,7 @@ export default async function ThinghyListPage() {
   });
 
   return (
-    <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
+    <main className="py-6 px-2 max-w-full sm:max-w-5xl mx-auto text-white">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-white">Your Thinghies</h1>
         <div className="relative w-full md:w-sm">
