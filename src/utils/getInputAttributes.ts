@@ -13,7 +13,7 @@ export function getInputAttributes(fieldType: string): {
     case "location":
       return { type: "url", inputMode: "url" };
     case "duration":
-      return { type: "number", inputMode: "decimal" };
+      return { type: "text", inputMode: "text" };
     case "url":
       return { type: "url", inputMode: "url" };
     case "date":

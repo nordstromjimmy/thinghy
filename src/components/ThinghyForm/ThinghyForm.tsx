@@ -4,10 +4,8 @@ import { Loader2, Save } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { AVAILABLE_FIELDS } from "@/types/fields";
 import ThinghyField from "./ThinghyField";
-import { showErrorToast } from "../ShowToast";
 import { decrypt, encrypt } from "@/utils/encryption";
 import type { Field } from "@/types/Field";
-import { showError } from "../ShowError";
 
 type Props = {
   initialTitle?: string;
@@ -63,7 +61,6 @@ export default function ThinghyForm({
   const handleSubmit = async () => {
     setTitleError("");
     if (!title.trim()) {
-      //showErrorToast("Add a Title to save");
       setTitleError("Add a Title to save");
       return;
     }
@@ -93,12 +90,10 @@ export default function ThinghyForm({
 
           return {
             ...field,
-            value: result.path, // This is the final image path stored in DB
+            value: result.path,
             file: undefined,
           };
         }
-
-        // Skip handling image here — it's assumed to already be uploaded
         return field;
       })
     );
