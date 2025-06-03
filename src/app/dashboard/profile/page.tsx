@@ -14,8 +14,7 @@ export default function SettingsPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  let isGoogleUser;
+  const [isGoogleUser, setIsGoogleUser] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -24,7 +23,7 @@ export default function SettingsPage() {
         error,
       } = await supabase.auth.getUser();
 
-      isGoogleUser = user?.app_metadata?.provider === "google";
+      setIsGoogleUser(user?.app_metadata?.provider === "google");
 
       if (error || !user) {
         router.push("/login");
@@ -96,7 +95,7 @@ export default function SettingsPage() {
             <span className="text-base font-medium">{email}</span>
           </div>
           <div>
-            {isGoogleUser && (
+            {!isGoogleUser && (
               <button
                 onClick={handlePasswordReset}
                 className="flex items-center gap-2 rounded text-white hover:text-gray-300 hover:underline transition cursor-pointer"
