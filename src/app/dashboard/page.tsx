@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   Eye,
 } from "lucide-react";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient();
@@ -26,6 +27,17 @@ export default async function DashboardPage() {
 
   return (
     <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
+      <div className="mb-12 text-center">
+        <h3 className="text-xl font-semibold text-white mb-2">
+          The Thinghy App is coming to the Play Store!
+        </h3>
+        <p className="text-gray-300 mb-4">
+          Enter your email and we'll notify you when it's live.
+        </p>
+        <div className="max-w-sm mx-auto">
+          <WaitlistForm />
+        </div>
+      </div>
       <div className="flex flex-col items-center justify-start px-6 py-12 text-white bg-[#2a2a3c] rounded-xl shadow-md">
         <h1 className="text-3xl font-bold mb-3">Welcome to Thinghy</h1>
         <p className="text-gray-400 mb-8 max-w-lg text-center text-sm sm:text-base">

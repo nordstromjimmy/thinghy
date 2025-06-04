@@ -37,13 +37,13 @@ export function WaitlistForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer"
+        className="w-full bg-yellow-300 text-black px-4 py-2 rounded-md hover:bg-yellow-400 cursor-pointer"
       >
         {status === "loading" ? "Joining..." : "Join the Waitlist"}
       </button>
       {status === "success" && (
         <p className="text-yellow-200 mt-2">
-          Thanks! We’ll notify you when Thinghy is live. 🎉
+          Thanks! We’ll notify you when Thinghy App is live!
         </p>
       )}
       {status === "error" && (
