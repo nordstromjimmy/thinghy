@@ -27,7 +27,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="py-6 max-w-full sm:max-w-5xl mx-auto text-white">
-      <div className="mb-12 text-center">
+      <div className="mb-12 text-center px-4 sm:px-0">
         <h3 className="text-xl font-semibold text-white mb-2">
           The Thinghy App is coming to the Play Store!
         </h3>
