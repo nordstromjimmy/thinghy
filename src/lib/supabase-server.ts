@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createSupabaseServerClient = (token?: string) => {
+export const createSupabaseServerClient = () => {
   const cookieStore = cookies();
 
   return createServerClient(
@@ -14,12 +14,6 @@ export const createSupabaseServerClient = (token?: string) => {
         },
         set() {},
         remove() {},
-      },
-      // We pass the token via global headers workaround (see below)
-      global: {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
       },
     }
   );
