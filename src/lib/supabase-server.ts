@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createSupabaseServerClient = () => {
-  const cookieStore = cookies(); // This is synchronous
+export const createSupabaseServerClient = (token?: string) => {
+  const cookieStore = cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,11 +12,13 @@ export const createSupabaseServerClient = () => {
         async get(name: string) {
           return (await cookieStore).get(name)?.value;
         },
-        set() {
-          // No-op, not needed for SSR read
-        },
-        remove() {
-          // No-op, not needed for SSR read
+        set() {},
+        remove() {},
+      },
+      // We pass the token via global headers workaround (see below)
+      global: {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
         },
       },
     }

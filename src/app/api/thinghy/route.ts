@@ -1,12 +1,13 @@
-import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { NextRequest, NextResponse } from "next/server";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function POST(req: NextRequest) {
-  const supabase = createSupabaseServerClient();
+  const token = req.headers.get("authorization")?.replace("Bearer ", "");
+  const supabase = createSupabaseServerClient(token);
 
   const {
     data: { user },
-    error: userError,
+    error,
   } = await supabase.auth.getUser();
 
   if (!user) {
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { error } = await supabase.from("thinghies").insert([
+  const { error: insertError } = await supabase.from("thinghies").insert([
     {
       user_id: user.id,
       title: title.trim(),
@@ -33,9 +34,9 @@ export async function POST(req: NextRequest) {
     },
   ]);
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (insertError) {
+    return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true }, { status: 200 });
+  return NextResponse.json({ success: true });
 }
