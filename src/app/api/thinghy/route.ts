@@ -1,23 +1,16 @@
 // app/api/add-thinghy/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createServerAdminClient } from "@/lib/supabase-admin";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function POST(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "");
+  const supabase = createSupabaseServerClient();
 
-  if (!token) {
-    return NextResponse.json({ error: "Missing token" }, { status: 401 });
-  }
-
-  const supabase = createServerAdminClient();
-
-  // Validate the token to get the user
   const {
     data: { user },
-    error,
-  } = await supabase.auth.getUser(token);
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  if (error || !user) {
+  if (userError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -36,7 +29,7 @@ export async function POST(req: NextRequest) {
       user_id: user.id,
       title: title.trim(),
       fields: fields ?? [],
-      is_favorite: isFavorite,
+      is_favorite: isFavorite ?? false,
       category: category || null,
     },
   ]);
