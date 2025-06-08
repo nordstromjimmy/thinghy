@@ -1,35 +1,33 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase-browser";
 
 export default function AuthListener() {
-  const router = useRouter();
-
   useEffect(() => {
     const supabase = createBrowserClient();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        console.warn("Session expired or user signed out. Cleaning up...");
+    } = supabase.auth.onAuthStateChange((event) => {
+      console.log("[Auth Event]:", event);
 
-        // Clean up Supabase session cookie and localStorage
+      if (event === "SIGNED_OUT") {
+        // Optional: clear cookies/localStorage to prevent future errors
         document.cookie = "sb-access-token=; Max-Age=0; path=/;";
         document.cookie = "sb-refresh-token=; Max-Age=0; path=/;";
         localStorage.removeItem("supabase.auth.token");
+      }
 
-        // Redirect to login
-        router.push("/");
+      if (event === "TOKEN_REFRESHED") {
+        console.info("Token refreshed successfully.");
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, []);
 
   return null;
 }
