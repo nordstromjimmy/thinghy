@@ -1,11 +1,10 @@
 "use client";
-import { use, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ThinghyCard } from "./ThinghyCard";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function ThinghyList({
   thinghies,
-  emptyMessage,
 }: {
   thinghies: any[];
   emptyMessage?: string;

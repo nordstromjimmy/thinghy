@@ -1,3 +1,4 @@
+import AuthListener from "@/components/AuthListener";
 import "./globals.css";
 import { Toaster } from "sonner";
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         ></script>
       </head>
       <body>
+        <AuthListener />
         {children} <Toaster position="bottom-center" richColors closeButton />
       </body>
     </html>
