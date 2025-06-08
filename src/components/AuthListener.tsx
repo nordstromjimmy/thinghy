@@ -22,7 +22,7 @@ export default function AuthListener() {
         localStorage.removeItem("supabase.auth.token");
 
         // Redirect to login
-        router.push("/login");
+        router.push("/");
       }
     });
 
