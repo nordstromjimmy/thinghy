@@ -6,8 +6,8 @@ const publicRoutes = ["/", "/login", "/signup", "/privacy", "/terms"];
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  const { pathname } = req.nextUrl;
 
-  // Create Supabase client with request cookies
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -22,24 +22,33 @@ export async function middleware(req: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  const { pathname } = req.nextUrl;
+    if (user && ["/", "/login", "/signup"].includes(pathname)) {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
 
-  // ✅ 1. Redirect logged-in user away from landing/login/signup to dashboard
-  if (user && ["/", "/login", "/signup"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    if (!user && pathname.startsWith("/dashboard")) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    return res;
+  } catch (err) {
+    console.error("Supabase auth error in middleware:", err);
+
+    // Optionally clear cookies if they're broken
+    res.cookies.set("sb-access-token", "", { maxAge: 0 });
+    res.cookies.set("sb-refresh-token", "", { maxAge: 0 });
+
+    if (pathname.startsWith("/dashboard")) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    return res;
   }
-
-  // ✅ 2. Block unauthenticated access to dashboard routes
-  const isProtectedRoute = pathname.startsWith("/dashboard");
-  if (!user && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  return res;
 }
 
 // 🔁 Apply middleware to all relevant routes
