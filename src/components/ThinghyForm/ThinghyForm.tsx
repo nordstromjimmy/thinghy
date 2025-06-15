@@ -123,7 +123,7 @@ export default function ThinghyForm({
               ...f,
               value,
               label: label !== undefined ? label : f.label,
-              file: file ?? f.file,
+              file: file !== undefined ? file : f.file,
             }
           : f
       )
